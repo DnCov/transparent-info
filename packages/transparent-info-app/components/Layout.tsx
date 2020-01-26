@@ -1,9 +1,10 @@
-import * as React from "react";
-import Link from "../src/Link";
-import Head from "next/head";
-import { AppBar, Toolbar, Typography, Theme } from "@material-ui/core";
-import { Footer } from "./Footer";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import * as React from 'react';
+import Link from '../src/Link';
+import Head from 'next/head';
+import { AppBar, Toolbar, Typography, Theme, Container } from '@material-ui/core';
+import { Footer } from './Footer';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { BottomNav } from './BottomNav';
 
 type Props = {
   title?: string;
@@ -11,15 +12,15 @@ type Props = {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     main: {
-      minHeight: "80vh"
+      minHeight: '80vh',
       // background: 'linear-gradient(45deg,#fe5196,#f77062)'
-    }
+    },
   })
 );
 
 const Layout: React.FunctionComponent<Props> = ({
   children,
-  title = "This is the default title"
+  title = 'This is the default title',
 }) => {
   const classes = useStyles();
   return (
@@ -28,6 +29,8 @@ const Layout: React.FunctionComponent<Props> = ({
         <title>{title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -38,19 +41,21 @@ const Layout: React.FunctionComponent<Props> = ({
               var s = document.getElementsByTagName("script")[0]; 
               s.parentNode.insertBefore(hm, s);
             })();
-          `
+          `,
           }}
         />
       </Head>
       <AppBar position="sticky">
         <Toolbar>
-          <Typography>2019-nCov transparent infomations</Typography>
+          <Typography>{title}</Typography>
         </Toolbar>
       </AppBar>
+
       <main className={classes.main}>{children}</main>
       <footer>
         <Footer />
       </footer>
+      <BottomNav />
     </>
   );
 };
