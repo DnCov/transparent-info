@@ -5,7 +5,9 @@ import { AppBar, Toolbar, Typography, Theme, Container } from '@material-ui/core
 import { Footer } from './Footer';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { BottomNav } from './BottomNav';
+import { setCn } from '../src/FechaUtil';
 
+setCn();
 type Props = {
   title?: string;
 };
