@@ -3,7 +3,7 @@ import TimeAgo from 'react-timeago';
 
 import { preparedEvents as events } from '../src/preparedEvents';
 import { Box, Paper, Icon, Typography } from '@material-ui/core';
-import { Component, FunctionComponent } from 'react';
+import { Component, FunctionComponent, useEffect } from 'react';
 import zhCnStrings from 'react-timeago/lib/language-strings/zh-CN';
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 
@@ -67,6 +67,9 @@ interface TimeLineEventProps {
 }
 
 export const TimeLineEvent: FunctionComponent<TimeLineEventProps> = ({ sortBy }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [sortBy]);
   return (
     <Timeline>
       {events
