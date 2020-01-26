@@ -1,0 +1,22 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "lerna run dev",
+    "debug": "lerna run debug"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "devDependencies": {
+    "husky": "^4.0.10",
+    "lerna": "^3.20.2",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1"
+  }
+}

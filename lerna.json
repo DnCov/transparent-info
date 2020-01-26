@@ -1,0 +1,13 @@
+{
+  "useWorkspaces": true,
+  "packages": ["packages/*"],
+  "npmClient": "yarn",
+  "command": {
+    "publish": {
+      "npmClient": "npm",
+      "allowBranch": ["master", "canary"],
+      "registry": "https://registry.n,pmjs.org/"
+    }
+  },
+  "version": "0.0.0"
+}
