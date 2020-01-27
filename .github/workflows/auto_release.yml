@@ -49,10 +49,9 @@ jobs:
           body: |
             # release hash  `${{ env.IPFS_DIR }}`
             # review
-            https://ipfs.io/ipfs/${{ env.IPFS_DIR }}
             https://cloudflare-ipfs.com/ipfs/${{ env.IPFS_DIR }}
+            https://ipfs.io/ipfs/${{ env.IPFS_DIR }}
             https://ipfs.infura.io/ipfs/${{ env.IPFS_DIR }}
-
             http://ncov.fox.mn:2020/${{ env.IPFS_DIR }}
 
           draft: false
