@@ -5,9 +5,9 @@ const withMDX = require('@next/mdx')({
   options: {
     hastPlugins: [rehypePrism],
   },
-  assetPrefix: './',
 });
 
 module.exports = withMDX({
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'tsx'],
+  assetPrefix: './',
 });
