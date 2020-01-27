@@ -48,6 +48,8 @@ jobs:
           release_name: Release ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
           body: |
             # release hash  `${{ env.IPFS_DIR }}`
+            newest http://ncov.fox.mn:2020/ipns/Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z
+
             # review
             https://cloudflare-ipfs.com/ipfs/${{ env.IPFS_DIR }}
             https://ipfs.io/ipfs/${{ env.IPFS_DIR }}
@@ -71,3 +73,11 @@ jobs:
           asset_path: ./${{ env.FILE_NAME }}
           asset_name: ${{ env.FILE_NAME }}
           asset_content_type: application/gzip
+      - name: publish to ipns
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          script: ipfs name  publish  --key=dncov ${{ env.IPFS_DIR }}
