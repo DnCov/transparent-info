@@ -53,9 +53,8 @@ jobs:
             https://ipfs.io/ipfs/${{ env.IPFS_DIR }}
             https://ipfs.infura.io/ipfs/${{ env.IPFS_DIR }}
             http://ncov.fox.mn:2020/${{ env.IPFS_DIR }}
-
           draft: false
-          prerelease: true
+          prerelease: false
       - run: |
           name=$(cat ./packages/transparent-info-app/package.json |jq -r .name)
           fileName=${name}-${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}.tar.gz
