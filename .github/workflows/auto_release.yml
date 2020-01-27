@@ -39,7 +39,7 @@ jobs:
           domain_id="62967876"
           rid=537209805
           sname="_dnslink.dncov"
-          curl -X POST https://dnsapi.cn/Record.Modify -d "login_token=$dt&format=json&domain_id=$domain_id&record_id=$rid&sub_domain=$sname&value=%2Fipfs%2F${{ env.IPFS_DIR }}&record_type=TXT&record_line_id=10%3D0"
+          curl -X POST https://dnsapi.cn/Record.Modify -d "login_token=$dt&format=json&domain_id=$domain_id&record_id=$rid&sub_domain=$sname&value=//ipfs/${{ env.IPFS_DIR }}&record_type=TXT&record_line_id=10%3D0"
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v2
