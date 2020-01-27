@@ -1,8 +1,14 @@
 name: auto release
 
 on:
-  - pull_request
-  - push
+  pull_request:
+    paths-ignore:
+      - .github/workflows/ci.yml
+      - README.md
+  push:
+    paths-ignore:
+      - .github/workflows/ci.yml
+      - README.md
 
 jobs:
   test:
