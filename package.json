@@ -6,7 +6,9 @@
   ],
   "scripts": {
     "dev": "lerna run dev",
-    "debug": "lerna run debug"
+    "debug": "lerna run debug",
+    "build": "lerna run build",
+    "boot": "lerna bootstrap"
   },
   "husky": {
     "hooks": {
