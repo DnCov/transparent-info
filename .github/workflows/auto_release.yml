@@ -39,7 +39,7 @@ jobs:
           domain_id="62967876"
           rid=537209805
           sname="_dnslink.dncov"
-          curl -X POST https://dnsapi.cn/Record.Modify -d "login_token=$dt&format=json&domain_id=$domain_id&record_id=$rid&sub_domain=$sname&value=//ipfs/${{ env.IPFS_DIR }}&record_type=TXT&record_line_id=10%3D0"
+          curl -X POST https://dnsapi.cn/Record.Modify -d "login_token=$dt&format=json&domain_id=$domain_id&record_id=$rid&sub_domain=$sname&value=dnslink=/ipfs/${{ env.IPFS_DIR }}&record_type=TXT&record_line_id=10%3D0"
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v2
@@ -54,10 +54,11 @@ jobs:
           tag_name: ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
           release_name: Release ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
           body: |
-            # release hash  `${{ env.IPFS_DIR }}`
-            newest
+            # newest
+             CID `${{ env.IPFS_DIR }}`
             - http://ncov.fox.mn:2020/ipns/Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z
             - https://ipfs.io/ipns/dncov.fox.mn
+            - https://cloudflare-ipfs.com/ipns/dncov.fox.mn
 
             # review
             https://cloudflare-ipfs.com/ipfs/${{ env.IPFS_DIR }}
