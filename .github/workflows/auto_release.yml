@@ -52,7 +52,7 @@ jobs:
             https://cloudflare-ipfs.com/ipfs/${{ env.IPFS_DIR }}
             https://ipfs.io/ipfs/${{ env.IPFS_DIR }}
             https://ipfs.infura.io/ipfs/${{ env.IPFS_DIR }}
-            http://ncov.fox.mn:2020/${{ env.IPFS_DIR }}
+            http://ncov.fox.mn:2020/ipfs/${{ env.IPFS_DIR }}
           draft: false
           prerelease: true
       - run: |

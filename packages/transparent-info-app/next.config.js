@@ -5,6 +5,7 @@ const withMDX = require('@next/mdx')({
   options: {
     hastPlugins: [rehypePrism],
   },
+  assetPrefix: './',
 });
 
 module.exports = withMDX({
