@@ -11,14 +11,65 @@ on:
       - README.md
 
 jobs:
-  test:
-    runs-on: self-hosted
-
+  build:
+    runs-on: ubuntu-latest
     steps:
-      - run: ipfs
       - uses: actions/checkout@v2
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - run: yarn --version
+      - run: |
+          echo "::set-env name=VERSION::$(cat lerna.json|jq -r .version)"
+          yarn
+          yarn boot
+          yarn build
+          yarn export
+      - name: setup ipfs
+        run: |
+          wget https://github.com/ipfs/go-ipfs/releases/download/v0.4.22/go-ipfs_v0.4.22_linux-amd64.tar.gz
+          tar -xf ./go-ipfs_v0.4.22_linux-amd64.tar.gz
+          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./packages/transparent-info-app/out |tee -a rst.log
+          IPFS_DIR=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
+          echo "::set-env name=IPFS_DIR::${IPFS_DIR}"
+
+      - name: Generate build number
+        id: buildnumber
+        uses: einaregilsson/build-number@v2
+        with:
+          token: ${{secrets.github_token}}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
+          release_name: Release ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
+          body: |
+            # release hash  `${{ env.IPFS_DIR }}`
+            # review
+            https://ipfs.io/ipfs/${{ env.IPFS_DIR }}
+            https://cloudflare-ipfs.com/ipfs/${{ env.IPFS_DIR }}
+            https://ipfs.infura.io/ipfs/${{ env.IPFS_DIR }}
+
+            http://ncov.fox.mn:2020/${{ env.IPFS_DIR }}
+
+          draft: false
+          prerelease: true
+      - run: |
+          name=$(cat packages/transparent-info-app/package.json |jq -r .name)
+          fileName=${name}-${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}.tar.gz
+          tar "./${fileName}" -cf  ./packages/transparent-info-app/out
+          echo "::set-env name=FILE_NAME::${fileName}"
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ${{ env.FILE_NAME }}
+          asset_name: ${{ env.FILE_NAME }}
+          asset_content_type: application/gzip

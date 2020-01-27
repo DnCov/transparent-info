@@ -10,7 +10,7 @@ on:
       - README.md
 
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
