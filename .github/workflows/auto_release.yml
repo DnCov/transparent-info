@@ -40,7 +40,7 @@ jobs:
           token: ${{secrets.github_token}}
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
@@ -54,7 +54,7 @@ jobs:
             https://ipfs.infura.io/ipfs/${{ env.IPFS_DIR }}
             http://ncov.fox.mn:2020/${{ env.IPFS_DIR }}
           draft: false
-          prerelease: false
+          prerelease: true
       - run: |
           name=$(cat ./packages/transparent-info-app/package.json |jq -r .name)
           fileName=${name}-${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}.tar.gz
