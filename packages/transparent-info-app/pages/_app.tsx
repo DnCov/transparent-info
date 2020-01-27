@@ -6,10 +6,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
 import { MDXProvider } from '@mdx-js/react';
 import { Divider } from '@material-ui/core';
+import MdImg from '../components/MdImg';
 
 const mdComponents = {
   h1: (props: any) => <h1 style={{ color: 'tomato' }} {...props} />,
   hr: (props: any) => <Divider />,
+  img: (props: any) => <MdImg {...props} />,
 };
 
 export default class MyApp extends App {
@@ -26,6 +28,7 @@ export default class MyApp extends App {
 
     return (
       <MDXProvider components={mdComponents}>
+        {/* <MDXProvider> */}
         <React.Fragment>
           <Head>
             <title>2019-nCov transparent infomation</title>

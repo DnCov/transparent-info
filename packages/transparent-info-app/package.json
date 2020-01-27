@@ -29,6 +29,7 @@
     "url": "https://github.com/DnCov/transparent-info/issues"
   },
   "dependencies": {
+    "@mapbox/rehype-prism": "^0.4.0",
     "@material-ui/core": "^4.9.0",
     "@material-ui/icons": "^4.5.1",
     "@material-ui/styles": "^4.9.0",
