@@ -60,7 +60,7 @@ jobs:
       - run: |
           name=$(cat ./packages/transparent-info-app/package.json |jq -r .name)
           fileName=${name}-${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}.tar.gz
-          tar "./${fileName}" -cf  ./packages/transparent-info-app/out
+          tar  -cf "./${fileName}"   ./packages/transparent-info-app/out
           echo "::set-env name=FILE_NAME::${fileName}"
 
       - name: Upload Release Asset
