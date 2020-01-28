@@ -20,7 +20,7 @@ jobs:
           echo "::set-env name=PRERELEASE::true"
           echo "::set-env name=NEED_RELEASE::yes"
       - name: check release
-        if: endsWith(github.event.head_commit.message,'prerelease')
+        if: env.RELEASE_TYPE != 'prerelease' &&  endsWith(github.event.head_commit.message,'release')
         run: |
           echo "::set-env name=RELEASE_TYPE::release"
           echo "::set-env name=PRERELEASE::false"
