@@ -44,6 +44,7 @@ jobs:
         if: env.NEED_RELEASE == 'yes'
         env:
           ASSETS_PREFIX: ${{ env.IPNS }}
+          BASE_PATH: ${{ env.IPNS }}
         run: |
           echo "::set-env name=VERSION::$(cat lerna.json|jq -r .version)"
           yarn
@@ -60,6 +61,13 @@ jobs:
         run: |
           cp -r "${{ env.OUT_DIR }}" ./out
           find ./out ! -path ./out  |egrep -v _next |xargs rm -rf
+
+          # replace basePath
+          chunk=$(grep -R '${{ env.IPNS }}' ./out |awk -F ':' '{print $1}')
+          echo "will edit $chunk"
+          hackCode='/(\/ipfs\/[^\/]+)/.exec(window.location.pathname)[1]'
+          sed -i -e "s|\"${{ env.IPNS }}\"|$hackCode|g"
+
           ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out/ --hidden |tee -a assets_rst.log
           ASSETS_IPFS_CID=$(cat  ./assets_rst.log | tail -n 1 | awk '{print $2}')
           echo "::set-env name=ASSETS_IPFS_CID::${ASSETS_IPFS_CID}"

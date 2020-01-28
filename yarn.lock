@@ -398,6 +398,13 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.8.0"
 
+"@babel/plugin-syntax-bigint@7.8.3":
+  version "7.8.3"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-bigint/-/plugin-syntax-bigint-7.8.3.tgz#4c9a6f669f5d0cdf1b90a1671e9a146be5300cea"
+  integrity sha512-wnTnFlG+YxQm3vDxpGE57Pj0srRU4sHE/mDkt1qv2YJJSeUAec2ma4WLUnUPeKjyrfntVwe/N6dCXpU+zL3Npg==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.8.0"
+
 "@babel/plugin-syntax-dynamic-import@7.2.0":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-dynamic-import/-/plugin-syntax-dynamic-import-7.2.0.tgz#69c159ffaf4998122161ad8ebc5e6d1f55df8612"
@@ -1831,10 +1838,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@next/mdx@^9.2.1":
-  version "9.2.1"
-  resolved "https://registry.yarnpkg.com/@next/mdx/-/mdx-9.2.1.tgz#0cc3016a03572e34e5fcb7bb3137fc74266c3f97"
-  integrity sha512-Nhwxlg/CMExjTdXVDc7mbx4UkSGr/ye36iFe8fAj71MyWAjX3y+GB+VG7iLU564y3TqeuLG4iWxwZpmmh/HJxQ==
+"@next/mdx@canary":
+  version "9.2.2-canary.2"
+  resolved "https://registry.yarnpkg.com/@next/mdx/-/mdx-9.2.2-canary.2.tgz#ec9e3b23a22f0ccc18056f7f126a41fa1d1b9bab"
+  integrity sha512-JfbnqiWqNZOxpVr3LYO8L7aKZiq8ai3rqqsLY8O8oo0Ps5fT8g8X64MMDiaMQeo9PFnb8T6PwuvgWERR0G/nmg==
 
 "@nodelib/fs.stat@^1.1.2":
   version "1.1.3"
@@ -4118,6 +4125,11 @@ escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
   integrity sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
+
+escape-string-regexp@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz#a30304e99daa32e23b2fd20f51babd07cffca344"
+  integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
 
 escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
@@ -6472,10 +6484,10 @@ next-tick@~1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
-next@^9.2.1:
-  version "9.2.1"
-  resolved "https://registry.yarnpkg.com/next/-/next-9.2.1.tgz#5275adfdeffc85b4a4b113466581a326390940c5"
-  integrity sha512-oI68lEmBLf9Z/R81wRFbziD9v/2quPdC3nRP+dTgOYcCR9F3ylbnB+D2BKYqBCLaGNXKQDt4FuVtZLYBAea6Gw==
+next@canary:
+  version "9.2.2-canary.2"
+  resolved "https://registry.yarnpkg.com/next/-/next-9.2.2-canary.2.tgz#5ebedab78992f424aa0fbfab82eaab878149e6fe"
+  integrity sha512-03AAy35AwfgBghG/NGuSYD4dPJ+9Z7W1ThQY7uj9r88Hr3EQW3ayFZ4XzunqTAtnN5PUv1JNHktAbZBEXFjI0A==
   dependencies:
     "@ampproject/toolbox-optimizer" "1.1.1"
     "@babel/core" "7.7.2"
@@ -6483,6 +6495,7 @@ next@^9.2.1:
     "@babel/plugin-proposal-nullish-coalescing-operator" "7.7.4"
     "@babel/plugin-proposal-object-rest-spread" "7.6.2"
     "@babel/plugin-proposal-optional-chaining" "7.7.4"
+    "@babel/plugin-syntax-bigint" "7.8.3"
     "@babel/plugin-syntax-dynamic-import" "7.2.0"
     "@babel/plugin-transform-modules-commonjs" "7.7.0"
     "@babel/plugin-transform-runtime" "7.6.2"
@@ -6512,6 +6525,7 @@ next@^9.2.1:
     css-loader "3.3.0"
     cssnano-simple "1.0.0"
     devalue "2.0.1"
+    escape-string-regexp "2.0.0"
     etag "1.8.1"
     file-loader "4.2.0"
     find-up "4.0.0"
