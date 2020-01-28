@@ -66,8 +66,8 @@ jobs:
         run: |
           dt="${{secrets.DNSPOD_TOKEN}}"
           domain_id="62967876"
-          rid=537492639
-          sname="_dnslink.ncov"
+          rid=537502021
+          sname="latest.dncov"
           curl -X POST https://dnsapi.cn/Record.Modify -d "login_token=$dt&format=json&domain_id=$domain_id&record_id=$rid&sub_domain=$sname&value=dnslink=/ipfs/${{ env.IPFS_CID }}&record_type=TXT&record_line_id=10%3D0"
       - name: Generate build number
         if: env.NEED_RELEASE == 'yes'
