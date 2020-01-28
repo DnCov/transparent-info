@@ -56,21 +56,26 @@ jobs:
           wget https://github.com/ipfs/go-ipfs/releases/download/v0.4.22/go-ipfs_v0.4.22_linux-amd64.tar.gz
           tar -xf ./go-ipfs_v0.4.22_linux-amd64.tar.gz
       - name: add to ipfs
+        if: env.NEED_RELEASE == 'yes'
         run: |
-          dir="${{ env.OUT_DIR }}"
-          cp -r $dir ./out_bak1
-          cp -r $dir ./out_bak2
-          find ./out_bak1 ! -path ./out_bak1  |egrep -v _next |xargs rm -rf
-          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out_bak1/ --hidden |tee -a assets_rst.log
+          cp -r "${{ env.OUT_DIR }}" ./out
+          find ./out ! -path ./out  |egrep -v _next |xargs rm -rf
+          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out/ --hidden |tee -a assets_rst.log
           ASSETS_IPFS_CID=$(cat  ./assets_rst.log | tail -n 1 | awk '{print $2}')
           echo "::set-env name=ASSETS_IPFS_CID::${ASSETS_IPFS_CID}"
-
-          rm -rf ./out_bak2/_next
-          find ./out_bak2/ -type file |xargs -I ^_^  sed -i -e "s|${{ env.IPNS }}|/ipfs/${ASSETS_IPFS_CID}|g" ^_^
-          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out_bak2/ --hidden |tee -a rst.log
+          rm -f ./assets_rst.log
+          rm -rf ./out
+      - name: add rest to ipfs
+        if: env.NEED_RELEASE == 'yes'
+        run: |
+          cp -r "${{ env.OUT_DIR }}" ./out
+          rm -rf ./out/_next
+          find ./out -type file |xargs -I ^_^  sed -i -e "s|${{ env.IPNS }}|/ipfs/${{ env.ASSETS_IPFS_CID }}|g" ^_^
+          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out/ --hidden |tee -a rst.log
           IPFS_CID=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
-          echo "::set-env name=IPFS_CID::${IPFS_CID}"
-
+          echo "::set-env name=IPFS_CID::${IPFS_CID}" 
+          rm -f rst.log
+          rm -rf ./out
       - name: update dns record
         if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         run: |
@@ -103,17 +108,19 @@ jobs:
           tag_name: ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
           release_name: Release ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
           body: |
-            # newest
-             CID `${{ env.IPFS_CID }}`
-            - http://ncov.fox.mn:2020/ipns/Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z
-            - https://ipfs.io/ipns/dncov.fox.mn
-            - https://cloudflare-ipfs.com/ipns/dncov.fox.mn
+            # current
+             root CID `${{ env.IPFS_CID }}`
 
-            # review
             https://cloudflare-ipfs.com/ipfs/${{ env.IPFS_CID }}
             https://ipfs.io/ipfs/${{ env.IPFS_CID }}
             https://ipfs.infura.io/ipfs/${{ env.IPFS_CID }}
             http://ncov.fox.mn:2020/ipfs/${{ env.IPFS_CID }}
+
+
+            # newest
+            - http://ncov.fox.mn:2020/ipns/Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z
+            - https://ipfs.io/ipns/dncov.fox.mn
+            - https://cloudflare-ipfs.com/ipns/dncov.fox.mn
           draft: false
           prerelease: ${{ env.PRERELEASE }}
       - name: gen file name
