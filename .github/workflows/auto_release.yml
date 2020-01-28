@@ -61,13 +61,13 @@ jobs:
           cp -r $dir ./out_bak1
           cp -r $dir ./out_bak2
           find ./out_bak1 ! -path ./out_bak1  |egrep -v _next |xargs rm -rf
-          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r $dir --hidden |tee -a assets_rst.log
+          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out_bak1/ --hidden |tee -a assets_rst.log
           ASSETS_IPFS_CID=$(cat  ./assets_rst.log | tail -n 1 | awk '{print $2}')
           echo "::set-env name=ASSETS_IPFS_CID::${ASSETS_IPFS_CID}"
 
           rm -rf ./out_bak2/_next
           find ./out_bak2/ -type file |xargs -I ^_^  sed -i -e "s|${{ env.IPNS }}|/ipfs/${ASSETS_IPFS_CID}|g" ^_^
-          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out_bak2 --hidden |tee -a rst.log
+          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out_bak2/ --hidden |tee -a rst.log
           IPFS_CID=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
           echo "::set-env name=IPFS_CID::${IPFS_CID}"
 
@@ -144,5 +144,5 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           port: ${{ secrets.DEPLOY_PORT }}
           script: |
-            /home/pi/go/bin/ipfs pin add ${{ env.IPFS_CID }}
+            #/home/pi/go/bin/ipfs pin add ${{ env.IPFS_CID }}
             /home/pi/go/bin/ipfs name  publish  --key=dncov ${{ env.IPFS_CID }}
