@@ -26,7 +26,7 @@ jobs:
           echo "::set-env name=PRERELEASE::false"
           echo "::set-env name=NEED_RELEASE::yes"
       - name: exit if needn't release
-        if: NEED_RELEASE != 'yes'
+        if: env.NEED_RELEASE != 'yes'
         run: |
           echo "needn't release"
           exit 1
