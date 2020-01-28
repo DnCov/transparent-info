@@ -70,7 +70,7 @@ jobs:
         run: |
           cp -r "${{ env.OUT_DIR }}" ./out
           rm -rf ./out/_next
-          find ./out -type file |xargs -I ^_^  sed -i -e "s|${{ env.IPNS }}|/ipfs/${{ env.ASSETS_IPFS_CID }}|g" ^_^
+          find ./out -type f |xargs -I ^_^  sed -i -e "s|${{ env.IPNS }}|/ipfs/${{ env.ASSETS_IPFS_CID }}|g" ^_^
           ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out/ --hidden |tee -a rst.log
           IPFS_CID=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
           echo "::set-env name=IPFS_CID::${IPFS_CID}" 
