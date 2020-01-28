@@ -7,8 +7,13 @@ const withMDX = require('@next/mdx')({
   },
 });
 
+const assetPrefix = process.env['ASSETS_PREFIX'] || '/';
+
 module.exports = withMDX({
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'tsx'],
-  assetPrefix: '/ipns/dncov.fox.mn/',
+  assetPrefix: assetPrefix,
+  env: {
+    ASSETS_PREFIX: assetPrefix,
+  },
   // assetPrefix: '/ipns/Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z/',
 });
