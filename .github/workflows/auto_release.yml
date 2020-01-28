@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       OUT_DIR: ./packages/transparent-info-app/out
+      IPNS: /ipns/Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z
     steps:
       - name: check prerelease
         if: endsWith(github.event.head_commit.message,':prerelease')
@@ -41,6 +42,8 @@ jobs:
           node-version: 12.x
       - name: build and export
         if: env.NEED_RELEASE == 'yes'
+        env:
+          ASSETS_PREFIX: ${{ env.IPNS }}
         run: |
           echo "::set-env name=VERSION::$(cat lerna.json|jq -r .version)"
           yarn
@@ -52,25 +55,19 @@ jobs:
         run: |
           wget https://github.com/ipfs/go-ipfs/releases/download/v0.4.22/go-ipfs_v0.4.22_linux-amd64.tar.gz
           tar -xf ./go-ipfs_v0.4.22_linux-amd64.tar.gz
+      - name: add to ipfs
+        run: |
+          dir="${{ env.OUT_DIR }}"
+          cp -r $dir ./out_bak1
+          cp -r $dir ./out_bak2
+          find ./out_bak1 ! -path ./out_bak1  |egrep -v _next |xargs rm -rf
+          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r $dir --hidden |tee -a assets_rst.log
+          ASSETS_IPFS_CID=$(cat  ./assets_rst.log | tail -n 1 | awk '{print $2}')
+          echo "::set-env name=ASSETS_IPFS_CID::${ASSETS_IPFS_CID}"
 
-      - name: add assets to ipfs
-        run: |
-          dir="${{ env.OUT_DIR }}"
-          find $dir ! -path $dir  |egrep -v _next |xargs rm -rf
-          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r $dir |tee -a assets_rst.log
-          IPFS_CID=$(cat  ./assets_rst.log | tail -n 1 | awk '{print $2}')
-          echo "::set-env name=ASSETS_IPFS_CID::${IPFS_CID}"
-      - name: rebuild with assets prefix
-        env:
-          ASSETS_PREFIX: /ipfs/${{ env.ASSETS_IPFS_CID }}
-        run: |
-          yarn run build
-          yarn run export
-          rm -rf "${{ env.OUT_DIR }}/_next"
-      - name: add html file to ipfs
-        run: |
-          dir="${{ env.OUT_DIR }}"
-          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r $dir |tee -a rst.log
+          rm -rf ./out_bak2/_next
+          find ./out_bak2/ -type file |xargs -I ^_^  sed -i -e "s|${{ env.IPNS }}|/ipfs/${ASSETS_IPFS_CID}|g" ^_^
+          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out_bak2 --hidden |tee -a rst.log
           IPFS_CID=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
           echo "::set-env name=IPFS_CID::${IPFS_CID}"
 
