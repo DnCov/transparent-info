@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: check prerelease
-        if: endsWith(github.event.head_commit.message,'prerelease')
+        if: endsWith(github.event.head_commit.message,':prerelease')
         run: |
           echo "::set-env name=RELEASE_TYPE::prerelease"
           echo "::set-env name=PRERELEASE::true"
           echo "::set-env name=NEED_RELEASE::yes"
       - name: check release
-        if: env.RELEASE_TYPE != 'prerelease' &&  endsWith(github.event.head_commit.message,'release')
+        if: endsWith(github.event.head_commit.message,':release')
         run: |
           echo "::set-env name=RELEASE_TYPE::release"
           echo "::set-env name=PRERELEASE::false"
