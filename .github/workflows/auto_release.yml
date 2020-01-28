@@ -25,17 +25,20 @@ jobs:
           echo "::set-env name=RELEASE_TYPE::release"
           echo "::set-env name=PRERELEASE::false"
           echo "::set-env name=NEED_RELEASE::yes"
-      - name: exit if needn't release
-        if: env.NEED_RELEASE != 'yes'
-        run: |
-          echo "needn't release"
-          exit 1
+      # - name: exit if needn't release
+      #   if: env.NEED_RELEASE != 'yes'
+      #   run: |
+      #     echo "needn't release"
+      #     exit 1
       - uses: actions/checkout@v2
+        if: env.NEED_RELEASE == 'yes'
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
+        if: env.NEED_RELEASE == 'yes'
         with:
           node-version: 12.x
       - name: build and export
+        if: env.NEED_RELEASE == 'yes'
         run: |
           echo "::set-env name=VERSION::$(cat lerna.json|jq -r .version)"
           yarn
@@ -43,6 +46,7 @@ jobs:
           yarn build
           yarn export
       - name: setup ipfs and add to ipfs network
+        if: env.NEED_RELEASE == 'yes'
         run: |
           wget https://github.com/ipfs/go-ipfs/releases/download/v0.4.22/go-ipfs_v0.4.22_linux-amd64.tar.gz
           tar -xf ./go-ipfs_v0.4.22_linux-amd64.tar.gz
@@ -50,7 +54,7 @@ jobs:
           IPFS_CID=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
           echo "::set-env name=IPFS_CID::${IPFS_CID}"
       - name: update dns record
-        if: env.RELEASE_TYPE == 'release'
+        if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         run: |
           dt="${{secrets.DNSPOD_TOKEN}}"
           domain_id="62967876"
@@ -58,11 +62,13 @@ jobs:
           sname="_dnslink.dncov"
           curl -X POST https://dnsapi.cn/Record.Modify -d "login_token=$dt&format=json&domain_id=$domain_id&record_id=$rid&sub_domain=$sname&value=dnslink=/ipfs/${{ env.IPFS_CID }}&record_type=TXT&record_line_id=10%3D0"
       - name: Generate build number
+        if: env.NEED_RELEASE == 'yes'
         id: buildnumber
         uses: einaregilsson/build-number@v2
         with:
           token: ${{secrets.github_token}}
       - name: Create Release
+        if: env.NEED_RELEASE == 'yes'
         id: create_release
         uses: actions/create-release@master
         env:
@@ -85,6 +91,7 @@ jobs:
           draft: false
           prerelease: ${{ env.PRERELEASE }}
       - name: gen file name
+        if: env.NEED_RELEASE == 'yes'
         run: |
           name=$(cat ./packages/transparent-info-app/package.json |jq -r .name)
           fileName=${name}-${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}.tar.gz
@@ -92,6 +99,7 @@ jobs:
           echo "::set-env name=FILE_NAME::${fileName}"
 
       - name: Upload Release Asset
+        if: env.NEED_RELEASE == 'yes'
         id: upload-release-asset
         uses: actions/upload-release-asset@v1.0.1
         env:
@@ -102,7 +110,7 @@ jobs:
           asset_name: ${{ env.FILE_NAME }}
           asset_content_type: application/gzip
       - name: publish ipns and pin
-        if: env.RELEASE_TYPE == 'release'
+        if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEPLOY_HOST }}
