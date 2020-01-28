@@ -1,10 +1,16 @@
 name: CI
 on:
-  - pull_request
-  - push
+  pull_request:
+    paths-ignore:
+      - .github/workflows/auto_release.yml
+      - README.md
+  push:
+    paths-ignore:
+      - .github/workflows/auto_release.yml
+      - README.md
 
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
 
     steps:

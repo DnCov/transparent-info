@@ -1,0 +1,96 @@
+name: auto release
+
+on:
+  pull_request:
+    paths-ignore:
+      - .github/workflows/ci.yml
+      - README.md
+  push:
+    paths-ignore:
+      - .github/workflows/ci.yml
+      - README.md
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: build and export
+        run: |
+          echo "::set-env name=VERSION::$(cat lerna.json|jq -r .version)"
+          yarn
+          yarn boot
+          yarn build
+          yarn export
+      - name: setup ipfs and add to ipfs network
+        run: |
+          wget https://github.com/ipfs/go-ipfs/releases/download/v0.4.22/go-ipfs_v0.4.22_linux-amd64.tar.gz
+          tar -xf ./go-ipfs_v0.4.22_linux-amd64.tar.gz
+          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./packages/transparent-info-app/out |tee -a rst.log
+          IPFS_DIR=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
+          echo "::set-env name=IPFS_DIR::${IPFS_DIR}"
+      - name: update dns record
+        run: |
+          dt="${{secrets.DNSPOD_TOKEN}}"
+          domain_id="62967876"
+          rid=537209805
+          sname="_dnslink.dncov"
+          curl -X POST https://dnsapi.cn/Record.Modify -d "login_token=$dt&format=json&domain_id=$domain_id&record_id=$rid&sub_domain=$sname&value=dnslink=/ipfs/${{ env.IPFS_DIR }}&record_type=TXT&record_line_id=10%3D0"
+      - name: Generate build number
+        id: buildnumber
+        uses: einaregilsson/build-number@v2
+        with:
+          token: ${{secrets.github_token}}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
+          release_name: Release ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
+          body: |
+            # newest
+             CID `${{ env.IPFS_DIR }}`
+            - http://ncov.fox.mn:2020/ipns/Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z
+            - https://ipfs.io/ipns/dncov.fox.mn
+            - https://cloudflare-ipfs.com/ipns/dncov.fox.mn
+
+            # review
+            https://cloudflare-ipfs.com/ipfs/${{ env.IPFS_DIR }}
+            https://ipfs.io/ipfs/${{ env.IPFS_DIR }}
+            https://ipfs.infura.io/ipfs/${{ env.IPFS_DIR }}
+            http://ncov.fox.mn:2020/ipfs/${{ env.IPFS_DIR }}
+          draft: false
+          prerelease: true
+      - name: gen file name
+        run: |
+          name=$(cat ./packages/transparent-info-app/package.json |jq -r .name)
+          fileName=${name}-${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}.tar.gz
+          tar  -cf "./${fileName}"   ./packages/transparent-info-app/out
+          echo "::set-env name=FILE_NAME::${fileName}"
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./${{ env.FILE_NAME }}
+          asset_name: ${{ env.FILE_NAME }}
+          asset_content_type: application/gzip
+      - name: publish ipns and pin
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          script: |
+            /home/pi/go/bin/ipfs pin add ${{ env.IPFS_DIR }}
+            /home/pi/go/bin/ipfs name  publish  --key=dncov ${{ env.IPFS_DIR }}
