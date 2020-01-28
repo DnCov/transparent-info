@@ -66,7 +66,7 @@ jobs:
           chunk=$(grep -R '${{ env.IPNS }}' ./out |awk -F ':' '{print $1}')
           echo "will edit $chunk"
           hackCode='/(\/ipfs\/[^\/]+)/.exec(window.location.pathname)[1]'
-          sed -i -e "s|\"${{ env.IPNS }}\"|$hackCode|g"
+          sed -i -e "s|\"${{ env.IPNS }}\"|$hackCode|g" $chunk
 
           ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out/ --hidden |tee -a assets_rst.log
           ASSETS_IPFS_CID=$(cat  ./assets_rst.log | tail -n 1 | awk '{print $2}')
