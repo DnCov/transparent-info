@@ -12,6 +12,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      OUT_DIR: ./packages/transparent-info-app/out
     steps:
       - name: check prerelease
         if: endsWith(github.event.head_commit.message,':prerelease')
@@ -50,9 +52,28 @@ jobs:
         run: |
           wget https://github.com/ipfs/go-ipfs/releases/download/v0.4.22/go-ipfs_v0.4.22_linux-amd64.tar.gz
           tar -xf ./go-ipfs_v0.4.22_linux-amd64.tar.gz
-          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./packages/transparent-info-app/out |tee -a rst.log
+
+      - name: add assets to ipfs
+        run: |
+          dir="${{ env.OUT_DIR }}"
+          find $dir ! -path $dir  |egrep -v _next |xargs rm -rf
+          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r $dir |tee -a assets_rst.log
+          IPFS_CID=$(cat  ./assets_rst.log | tail -n 1 | awk '{print $2}')
+          echo "::set-env name=ASSETS_IPFS_CID::${IPFS_CID}"
+      - name: rebuild with assets prefix
+        env:
+          ASSETS_PREFIX: /ipfs/${{ env.ASSETS_IPFS_CID }}
+        run: |
+          yarn run build
+          yarn run export
+          rm -rf "${{ env.OUT_DIR }}/_next"
+      - name: add html file to ipfs
+        run: |
+          dir="${{ env.OUT_DIR }}"
+          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r $dir |tee -a rst.log
           IPFS_CID=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
           echo "::set-env name=IPFS_CID::${IPFS_CID}"
+
       - name: update dns record
         if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         run: |
