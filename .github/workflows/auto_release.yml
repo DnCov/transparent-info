@@ -47,8 +47,8 @@ jobs:
           wget https://github.com/ipfs/go-ipfs/releases/download/v0.4.22/go-ipfs_v0.4.22_linux-amd64.tar.gz
           tar -xf ./go-ipfs_v0.4.22_linux-amd64.tar.gz
           ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./packages/transparent-info-app/out |tee -a rst.log
-          IPFS_DIR=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
-          echo "::set-env name=IPFS_DIR::${IPFS_DIR}"
+          IPFS_CID=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
+          echo "::set-env name=IPFS_CID::${IPFS_CID}"
       - name: update dns record
         if: env.RELEASE_TYPE == 'release'
         run: |
@@ -56,7 +56,7 @@ jobs:
           domain_id="62967876"
           rid=537209805
           sname="_dnslink.dncov"
-          curl -X POST https://dnsapi.cn/Record.Modify -d "login_token=$dt&format=json&domain_id=$domain_id&record_id=$rid&sub_domain=$sname&value=dnslink=/ipfs/${{ env.IPFS_DIR }}&record_type=TXT&record_line_id=10%3D0"
+          curl -X POST https://dnsapi.cn/Record.Modify -d "login_token=$dt&format=json&domain_id=$domain_id&record_id=$rid&sub_domain=$sname&value=dnslink=/ipfs/${{ env.IPFS_CID }}&record_type=TXT&record_line_id=10%3D0"
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v2
@@ -72,16 +72,16 @@ jobs:
           release_name: Release ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
           body: |
             # newest
-             CID `${{ env.IPFS_DIR }}`
+             CID `${{ env.IPFS_CID }}`
             - http://ncov.fox.mn:2020/ipns/Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z
             - https://ipfs.io/ipns/dncov.fox.mn
             - https://cloudflare-ipfs.com/ipns/dncov.fox.mn
 
             # review
-            https://cloudflare-ipfs.com/ipfs/${{ env.IPFS_DIR }}
-            https://ipfs.io/ipfs/${{ env.IPFS_DIR }}
-            https://ipfs.infura.io/ipfs/${{ env.IPFS_DIR }}
-            http://ncov.fox.mn:2020/ipfs/${{ env.IPFS_DIR }}
+            https://cloudflare-ipfs.com/ipfs/${{ env.IPFS_CID }}
+            https://ipfs.io/ipfs/${{ env.IPFS_CID }}
+            https://ipfs.infura.io/ipfs/${{ env.IPFS_CID }}
+            http://ncov.fox.mn:2020/ipfs/${{ env.IPFS_CID }}
           draft: false
           prerelease: ${{ env.PRERELEASE }}
       - name: gen file name
@@ -110,5 +110,5 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           port: ${{ secrets.DEPLOY_PORT }}
           script: |
-            /home/pi/go/bin/ipfs pin add ${{ env.IPFS_DIR }}
-            /home/pi/go/bin/ipfs name  publish  --key=dncov ${{ env.IPFS_DIR }}
+            /home/pi/go/bin/ipfs pin add ${{ env.IPFS_CID }}
+            /home/pi/go/bin/ipfs name  publish  --key=dncov ${{ env.IPFS_CID }}
