@@ -9,6 +9,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Link from '../src/Link';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
+import { baseUrl } from './ipfs/Env';
 
 const useStyles = makeStyles({
   root: {
@@ -24,7 +25,7 @@ export function BottomNav() {
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     setValue(newValue);
-    router.push(newValue);
+    router.push(`${baseUrl}${newValue}`);
   };
 
   return (
@@ -32,7 +33,7 @@ export function BottomNav() {
       <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
         <BottomNavigationAction label="Recents" value="/event" icon={<RestoreIcon />} />
         <BottomNavigationAction label="Favorites" value="/" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="Nearby" value="nearby" icon={<LocationOnIcon />} />
+        <BottomNavigationAction label="Nearby" value="/postlist" icon={<LocationOnIcon />} />
       </BottomNavigation>
     </Container>
   );

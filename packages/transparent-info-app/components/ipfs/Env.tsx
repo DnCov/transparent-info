@@ -52,6 +52,7 @@ export function getIpfsBasePath(urlOrPath: string) {
 function currentAssetsPath() {
   const path = document.location.pathname;
   baseUrl = getIpfsBasePath(path);
+  console.log(baseUrl);
 }
 
 export default () => {
