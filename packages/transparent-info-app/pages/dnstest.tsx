@@ -1,6 +1,6 @@
 import { useEffect, useState, ChangeEvent } from 'react';
 import { Button, TextField, Typography } from '@material-ui/core';
-import { query, DnsType } from '../src/dns';
+import { query, DnsType, queryCid } from '../src/dns';
 export default () => {
   useEffect(() => {});
 
@@ -13,7 +13,7 @@ export default () => {
   };
 
   const handleQuery = async () => {
-    const rst = await query('_dnslink.dncov.fox.mn', DnsType.TXT);
+    const rst = await queryCid('latest.dncov.fox.mn');
     // const rst = await query('_txt.dncov.fox.mn', DnsType.TXT);
     // const rst = await query('txt.fox.mn', DnsType.TXT);
     setRst(JSON.stringify(rst));

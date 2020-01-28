@@ -37,14 +37,7 @@ export interface Query {
   Type: DnsType;
 }
 
-export async function query(domain?: string, type?: DnsType) {
-  if (!domain) {
-    domain = '_dnslink.dncov.fox.mn';
-  }
-  if (!type) {
-    type = DnsType.TXT;
-  }
-
+export async function query(domain: string, type: DnsType) {
   const body: Query = {
     Action: 'Query',
     Domain: domain,
@@ -59,4 +52,43 @@ export async function query(domain?: string, type?: DnsType) {
     throw new Error(`query error: ${rst.statusText}`);
   }
   return await rst.json();
+}
+
+interface TxtRecord {
+  Text: string[];
+}
+export async function queryTxt(domain: string): Promise<TxtRecord[]> {
+  return await query(domain, DnsType.TXT);
+}
+
+export async function queryCid(domain: string) {
+  const __data = [
+    {
+      EscapedText: ['dnslink=/ipfs/QmZSFH4oQqJhynkYaq88vYmpGRkpHCunPRC1KedynLECAp'],
+      Text: ['dnslink=/ipfs/QmZSFH4oQqJhynkYaq88vYmpGRkpHCunPRC1KedynLECAp'],
+      DomainName: {
+        Original: 'latest.dncov.fox.mn.',
+        Value: 'latest.dncov.fox.mn.',
+        Labels: ['.', 'mn.', 'fox.', 'dncov.', 'latest.'],
+      },
+      RecordType: 16,
+      RecordClass: 1,
+      TimeToLive: 594,
+      InitialTimeToLive: 594,
+      RawDataLength: 61,
+    },
+  ];
+
+  const res = await queryTxt(domain);
+  if (res.length) {
+    const txt = res[0].Text[0];
+    if (txt) {
+      const groups = txt.split('=');
+      if (groups.length > 1) {
+        return groups[1];
+      }
+    }
+  }
+
+  throw new Error('no result');
 }
