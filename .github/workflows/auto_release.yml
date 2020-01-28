@@ -1,19 +1,35 @@
 name: auto release
 
 on:
-  pull_request:
-    paths-ignore:
-      - .github/workflows/ci.yml
-      - README.md
   push:
     paths-ignore:
       - .github/workflows/ci.yml
       - README.md
+    branches:
+      - master
+      - releases/**
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: check prerelease
+        if: endsWith(github.event.head_commit.message,'prerelease')
+        run: |
+          echo "::set-env name=RELEASE_TYPE::prerelease"
+          echo "::set-env name=PRERELEASE::true"
+          echo "::set-env name=NEED_RELEASE::yes"
+      - name: check release
+        if: env.RELEASE_TYPE != 'prerelease' &&  endsWith(github.event.head_commit.message,'release')
+        run: |
+          echo "::set-env name=RELEASE_TYPE::release"
+          echo "::set-env name=PRERELEASE::false"
+          echo "::set-env name=NEED_RELEASE::yes"
+      - name: exit if needn't release
+        if: NEED_RELEASE != 'yes'
+        run: |
+          echo "needn't release"
+          exit 1
       - uses: actions/checkout@v2
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
@@ -34,6 +50,7 @@ jobs:
           IPFS_DIR=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
           echo "::set-env name=IPFS_DIR::${IPFS_DIR}"
       - name: update dns record
+        if: env.RELEASE_TYPE == 'release'
         run: |
           dt="${{secrets.DNSPOD_TOKEN}}"
           domain_id="62967876"
@@ -66,7 +83,7 @@ jobs:
             https://ipfs.infura.io/ipfs/${{ env.IPFS_DIR }}
             http://ncov.fox.mn:2020/ipfs/${{ env.IPFS_DIR }}
           draft: false
-          prerelease: true
+          prerelease: ${{ env.PRERELEASE }}
       - name: gen file name
         run: |
           name=$(cat ./packages/transparent-info-app/package.json |jq -r .name)
@@ -85,6 +102,7 @@ jobs:
           asset_name: ${{ env.FILE_NAME }}
           asset_content_type: application/gzip
       - name: publish ipns and pin
+        if: env.RELEASE_TYPE == 'release'
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEPLOY_HOST }}
