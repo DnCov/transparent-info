@@ -55,8 +55,9 @@ function currentAssetsPath() {
   console.log(baseUrl);
 }
 
-export default () => {
+export const EnvChecker = () => {
   useEffect(() => {
+    console.log('checker here------  did mount');
     currentAssetsPath();
     replaceAssetsSrc();
     if (!isIpfsResource(window.location.href)) {
@@ -65,5 +66,5 @@ export default () => {
     }
   }, []);
 
-  return <span />;
+  return <span></span>;
 };

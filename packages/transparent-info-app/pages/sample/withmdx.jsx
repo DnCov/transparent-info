@@ -1,4 +1,4 @@
-import Post from '../../components/sample/section.mdx';
+import Post from '../posts/section.mdx';
 
 import Layout from '../../components/Layout';
 

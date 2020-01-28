@@ -16,6 +16,28 @@
       "smartStep": true,
       "cwd": "${workspaceFolder}/packages/transparent-info-app",
       "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "attach server render",
+      "processId": "${command:PickProcess}",
+      "sourceMaps": true,
+      "outFiles": ["${cwd}/.next/server/**/*.js"],
+      "smartStep": true,
+      "cwd": "${workspaceFolder}/packages/transparent-info-app"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      },
+      "smartStep": true,
+      "cwd": "${workspaceFolder}/packages/transparent-info-app"
     }
   ]
 }
