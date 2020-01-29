@@ -5,7 +5,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import FolderIcon from '@material-ui/icons/Folder';
 import RestoreIcon from '@material-ui/icons/Restore';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
+import { List as ListIcon, Info as InfoIcon } from '@material-ui/icons';
 import Link from '../src/Link';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
@@ -31,9 +31,9 @@ export function BottomNav() {
   return (
     <Container className={classes.root}>
       <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
-        <BottomNavigationAction label="Recents" value="/event" icon={<RestoreIcon />} />
-        <BottomNavigationAction label="Favorites" value="/" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="Nearby" value="/postlist" icon={<LocationOnIcon />} />
+        <BottomNavigationAction label="Event" value="/event" icon={<RestoreIcon />} />
+        <BottomNavigationAction label="Posts" value="/postlist" icon={<ListIcon />} />
+        <BottomNavigationAction label="About" value="/about" icon={<InfoIcon />} />
       </BottomNavigation>
     </Container>
   );

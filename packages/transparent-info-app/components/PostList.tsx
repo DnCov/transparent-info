@@ -32,7 +32,7 @@ export const PostList: FunctionComponent<Props> = ({ posts }) => {
           <Link
             passHref={false}
             onClick={(evt: React.MouseEvent) => handleLinkClick(evt, e.href)}
-            href={`${process.env.BASE_PATH}${e.href}`}
+            href={e.href}
           >
             {e.title}
           </Link>
