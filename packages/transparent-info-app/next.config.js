@@ -22,5 +22,13 @@ module.exports = withMDX({
     ASSETS_PREFIX: assetPrefix,
     BASE_PATH: basePath,
   },
+  exportPathMap: async function(defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
+    return {
+      '/': { page: '/' },
+      '/about': { page: '/about' },
+      '/p/hello-nextjs': { page: '/post', query: { title: 'hello- i am from query' } },
+    };
+  },
+
   // assetPrefix: '/ipns/Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z/',
 });
