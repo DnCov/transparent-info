@@ -39,8 +39,10 @@ now build and release automation
 
 1. add `:prerelease` postfix on commit message.
 2. then merge to `master` branch
+3. the rest things will automatic complete soon
 
 # prerelease
 
 1. add `:release` postfix on commit message.
 2. then merge to `master` branch.
+3. the rest things will automatic complete soon
