@@ -57,11 +57,8 @@ function currentAssetsPath() {
 
 export const EnvChecker = () => {
   useEffect(() => {
-    console.log('checker here------  did mount');
-    currentAssetsPath();
-    replaceAssetsSrc();
     if (!isIpfsResource(window.location.href)) {
-      // tmp chose first
+      console.log(`current is not under /ipfs network, will add ipfs gateway for assets`);
       document.querySelectorAll('img').forEach(checkReplaceSrc);
     }
   }, []);
