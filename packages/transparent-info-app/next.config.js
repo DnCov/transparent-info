@@ -8,7 +8,7 @@ const withMDX = require('@next/mdx')({
 });
 
 const assetPrefix = process.env['ASSETS_PREFIX'] || '/';
-const basePath = process.env['BASE_PATH'] || '/';
+const basePath = process.env['BASE_PATH'] || '';
 
 module.exports = withMDX({
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'tsx'],
@@ -17,6 +17,7 @@ module.exports = withMDX({
   experimental: {
     basePath: basePath,
   },
+  exportTrailingSlash: true,
   env: {
     ASSETS_PREFIX: assetPrefix,
     BASE_PATH: basePath,
