@@ -3,11 +3,11 @@ on:
   pull_request:
     paths-ignore:
       - .github/workflows/auto_release.yml
-      - README.md
+      - README.*
   push:
     paths-ignore:
       - .github/workflows/auto_release.yml
-      - README.md
+      - README.*
 
 jobs:
   ci:
