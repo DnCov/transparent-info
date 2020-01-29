@@ -24,6 +24,7 @@ module.exports = withMDX({
   },
   exportPathMap: async function(defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
     return {
+      ...defaultPathMap,
       '/': { page: '/' },
       '/about': { page: '/about' },
       '/p/hello-nextjs': { page: '/post', query: { title: 'hello- i am from query' } },
