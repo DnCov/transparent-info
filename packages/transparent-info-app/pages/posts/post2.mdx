@@ -1,0 +1,54 @@
+import Layout from '../../components/Layout';
+import { Posts } from '../../components/Posts';
+import Md2 from '../../components/md2.mdx';
+
+export const title = '这是一篇稍微复杂点的用法';
+export const href = '/posts/post2';
+
+# 本篇展示高端玩法， 适合有一点前端基础的同学
+
+以下是本文章源码
+
+```md
+// packages/transparent-info-app/pages/posts/post2.mdx
+import Layout from '../../components/Layout';
+import { Posts } from '../../components/Posts';
+import Md2 from '../../components/md2.mdx'
+
+export const title = '这是一篇稍微复杂点的用法';
+export const href = '/posts/section';
+
+# 本篇展示高端玩法， 适合有一点前端基础的同学
+
+---
+
+> 下面是引用其他 markdown 文件
+
+---
+
+<Md2 />
+
+---
+
+下面是引用 react 组件
+
+<Posts />
+```
+
+---
+
+> 下面是引用其他 markdown 文件
+
+---
+
+<Md2 />
+
+---
+
+下面是引用 react 组件
+
+<Posts />
+
+---
+
+-----------ending--------------------

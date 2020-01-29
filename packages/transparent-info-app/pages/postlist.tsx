@@ -1,20 +1,16 @@
 import * as React from 'react';
 import Layout from '../components/Layout';
 import { NextPage, NextPageContext } from 'next';
-import { Container, ListItem } from '@material-ui/core';
-import { postsList } from './posts/index';
+import { Container, ListItem, List } from '@material-ui/core';
 import Link from '../src/Link';
-import { baseUrl } from '../components/ipfs/Env';
+import { Posts } from '../components/Posts';
+// import Link from 'next/link';
 
 export default () => {
   return (
     <Layout>
       <Container>
-        {postsList.map((e, i) => (
-          <ListItem>
-            <Link href={`${baseUrl}${e.href}`}> {e.title}</Link>
-          </ListItem>
-        ))}
+        <Posts />
       </Container>
     </Layout>
   );
