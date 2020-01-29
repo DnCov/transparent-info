@@ -57,7 +57,9 @@ function Link(props: LinkProps) {
   }
 
   let tmpHref = href as string;
-  if (!tmpHref.startsWith('/')) {
+  if (tmpHref.startsWith('http') || tmpHref.startsWith('//')) {
+    // do nothing
+  } else if (!tmpHref.startsWith('/')) {
     tmpHref = `/${tmpHref}`;
   }
   return (
