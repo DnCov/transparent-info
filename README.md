@@ -33,7 +33,7 @@ yarn export
 
 # release
 
-now build and release automation
+Release is now automated
 
 > .github/workflows/auto_release.yml
 
