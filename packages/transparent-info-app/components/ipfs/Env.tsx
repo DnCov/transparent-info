@@ -9,7 +9,7 @@ interface WithSrc {
   src: string;
 }
 
-function isIpfsResource(src: string) {
+export function isIpfsResource(src: string) {
   return /\/ip[fn]s\//.test(src);
 }
 

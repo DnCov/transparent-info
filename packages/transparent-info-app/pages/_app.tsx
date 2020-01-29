@@ -7,6 +7,7 @@ import theme from '../src/theme';
 import { MDXProvider } from '@mdx-js/react';
 import { Divider } from '@material-ui/core';
 import MdImg from '../components/MdImg';
+import { HomeFab } from '../components/fab/HomeFab';
 
 const mdComponents = {
   h1: (props: any) => <h1 style={{ color: 'tomato' }} {...props} />,
@@ -38,6 +39,7 @@ export default class MyApp extends App {
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
             <Component {...pageProps} />
+            <HomeFab />
           </ThemeProvider>
         </React.Fragment>
       </MDXProvider>
