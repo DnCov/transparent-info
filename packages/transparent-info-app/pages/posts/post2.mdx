@@ -1,6 +1,7 @@
 import Layout from '../../components/Layout';
 import { Posts } from '../../components/Posts';
 import Md2 from '../../components/md2.mdx';
+import { EditMe } from '../../components/Github.tsx';
 
 export const title = '这是一篇稍微复杂点的用法';
 export const href = '/posts/post2';
@@ -14,6 +15,7 @@ export const href = '/posts/post2';
 import Layout from '../../components/Layout';
 import { Posts } from '../../components/Posts';
 import Md2 from '../../components/md2.mdx'
+import { EditMe } from '../../components/Github.tsx';
 
 export const title = '这是一篇稍微复杂点的用法';
 export const href = '/posts/section';
@@ -36,6 +38,8 @@ export const href = '/posts/section';
 
 -----------ending--------------------
 
+<EditMe path="pages/posts/post2.mdx" />
+
 export default ({children})=>(<Layout title="高端玩法"> {children} </Layout>)
 ```
 
@@ -57,5 +61,6 @@ export default ({children})=>(<Layout title="高端玩法"> {children} </Layout>
 
 -----------ending--------------------
 
-export default ({children})=>(<Layout title="高端玩法"> {children} </Layout>
-)
+<EditMe path="pages/posts/post2.mdx" />
+
+export default ({ children }) => <Layout title="高端玩法"> {children} </Layout>;

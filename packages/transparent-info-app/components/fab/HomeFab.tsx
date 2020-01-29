@@ -1,6 +1,6 @@
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
-import { Fab } from '@material-ui/core';
+import { Fab, Tooltip } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
 import { useRouter } from 'next/router';
 
@@ -24,8 +24,10 @@ export const HomeFab = () => {
   const router = useRouter();
 
   return (
-    <Fab onClick={() => router.push('/')} className={classes.fab}>
-      <HomeIcon />
-    </Fab>
+    <Tooltip title="返回主页">
+      <Fab onClick={() => router.push('/')} className={classes.fab}>
+        <HomeIcon />
+      </Fab>
+    </Tooltip>
   );
 };
