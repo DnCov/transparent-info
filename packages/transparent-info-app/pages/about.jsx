@@ -1,16 +1,9 @@
 import * as React from 'react';
-import Link from 'next/link';
 import Layout from '../components/Layout';
-
+import About from '../components/section/About.mdx';
 const AboutPage = () => (
-  <Layout title="About | Next.js + TypeScript Example">
-    <h1>About</h1>
-    <p>This is the about page</p>
-    <p>
-      <Link href="/">
-        <a>Go home</a>
-      </Link>
-    </p>
+  <Layout title="关于DnCov| Transparent infomation on Novel coronavirus (2019-nCoV)  by decentralized  technology">
+    <About />
   </Layout>
 );
 
