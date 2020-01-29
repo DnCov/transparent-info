@@ -58,7 +58,12 @@ function Link(props: LinkProps) {
 
   const tmpHref = href as string;
   let finalHref: string;
-  if (tmpHref.startsWith('http') || tmpHref.startsWith('//')) {
+  if (
+    tmpHref.startsWith('http') ||
+    tmpHref.startsWith('//') ||
+    tmpHref.startsWith('/ipfs/') ||
+    tmpHref.startsWith('/ipns/')
+  ) {
     finalHref = tmpHref;
   } else {
     if (tmpHref.startsWith('/')) {
