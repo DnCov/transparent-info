@@ -56,18 +56,23 @@ function Link(props: LinkProps) {
     return <NextComposed className={className} ref={innerRef} href={href} {...other} />;
   }
 
-  let tmpHref = href as string;
+  const tmpHref = href as string;
+  let finalHref: string;
   if (tmpHref.startsWith('http') || tmpHref.startsWith('//')) {
-    // do nothing
-  } else if (!tmpHref.startsWith('/')) {
-    tmpHref = `/${tmpHref}`;
+    finalHref = tmpHref;
+  } else {
+    if (tmpHref.startsWith('/')) {
+      finalHref = `${process.env.BASE_PATH}${tmpHref}`;
+    } else {
+      finalHref = `${process.env.BASE_PATH}/${tmpHref}`;
+    }
   }
   return (
     <MuiLink
       component={NextComposed}
       className={className}
       ref={innerRef}
-      href={`${process.env.BASE_PATH}${tmpHref}`}
+      href={finalHref}
       {...other}
     />
   );
