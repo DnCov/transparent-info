@@ -43,7 +43,7 @@ jobs:
       - name: build and export
         if: env.NEED_RELEASE == 'yes'
         env:
-          ASSETS_PREFIX: ${{ env.IPNS }}
+          ASSETS_PREFIX: /${{ env.IPNS }}
           BASE_PATH: ${{ env.IPNS }}
         run: |
           echo "::set-env name=VERSION::$(cat lerna.json|jq -r .version)"
