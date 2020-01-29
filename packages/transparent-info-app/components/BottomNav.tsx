@@ -31,9 +31,9 @@ export function BottomNav() {
   return (
     <Container className={classes.root}>
       <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
-        <BottomNavigationAction label="Recents" value="/event.html" icon={<RestoreIcon />} />
+        <BottomNavigationAction label="Recents" value="/event" icon={<RestoreIcon />} />
         <BottomNavigationAction label="Favorites" value="/" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="Nearby" value="/postlist.html" icon={<LocationOnIcon />} />
+        <BottomNavigationAction label="Nearby" value="/postlist" icon={<LocationOnIcon />} />
       </BottomNavigation>
     </Container>
   );
