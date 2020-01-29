@@ -33,7 +33,7 @@ export default () => {
   };
 
   return (
-    <Layout title="新型冠状病毒突发事件发展路线">
+    <Layout title="新型冠状病毒突发事件发展路线| 注意 本篇信息暂未全部证实  需要你来完善和更正">
       <Container>
         <TimeLineEvent sortBy={sortBy} />
         <Fab onClick={changeSort} className={classes.fab}>
