@@ -9,9 +9,7 @@ import { Posts } from '../components/Posts';
 export default () => {
   return (
     <Layout title="文章列表">
-      <Container>
-        <Posts />
-      </Container>
+      <Posts />
     </Layout>
   );
 };
