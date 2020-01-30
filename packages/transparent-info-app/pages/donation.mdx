@@ -1,0 +1,18 @@
+import Layout from '../components/Layout';
+import { EditMe } from '../components/Github.tsx';
+/****************************************************************
+    编写说明 一行一个 此处作为汇总  后添加的放行首
+    为了及时发布 直接github 编辑此页面就可以
+    如果需要自动发布  commit信息 添加  :release  后缀
+*****************************************************************/
+
+<EditMe path="pages/posts/donaition.mdx" title="如果需要添加点击我进行编辑" />
+
+export default ({ children }) => (
+  <Layout
+    title="需要捐助的列表信息"
+    toolbar={<EditMe btn path="pages/posts/donaition.mdx" title="点击我可以编辑" />}
+  >
+    {children}
+  </Layout>
+);

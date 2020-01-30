@@ -6,11 +6,13 @@ import { Footer } from './Footer';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { BottomNav } from './BottomNav';
 import { setCn } from '../src/FechaUtil';
+import { Component } from 'react';
 
 setCn();
-type Props = {
+interface Props {
   title?: string;
-};
+  toolbar?: Component;
+}
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     main: {
@@ -23,6 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Layout: React.FunctionComponent<Props> = ({
   children,
   title = 'This is the default title',
+  toolbar = null,
 }) => {
   const classes = useStyles();
   return (
@@ -50,10 +53,13 @@ const Layout: React.FunctionComponent<Props> = ({
       <AppBar position="sticky">
         <Toolbar>
           <Typography>{title}</Typography>
+          {toolbar}
         </Toolbar>
       </AppBar>
 
-      <main className={classes.main}>{children}</main>
+      <main className={classes.main}>
+        <Container maxWidth="sm">{children}</Container>
+      </main>
       <footer>
         <Footer />
       </footer>
