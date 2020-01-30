@@ -6,14 +6,12 @@ import { EditMe } from '../components/Github.tsx';
     如果需要自动发布  commit信息 添加  :release  后缀
 *****************************************************************/
 
-<EditMe path="pages/posts/donaition.mdx" title="如果需要添加点击我进行编辑" />
-
 - [安陆市赵棚镇人民政府接受社会捐赠公告](https://mp.weixin.qq.com/s/CVc-TLMXXqeDVOtSB7grSg)
 
 export default ({ children }) => (
   <Layout
     title="需要捐助的列表信息"
-    toolbar={<EditMe btn path="pages/posts/donaition.mdx" title="点击我可以编辑" />}
+    toolbar={<EditMe btn path="pages/donaition.mdx" title="点击我可以编辑" />}
   >
     {children}
   </Layout>
