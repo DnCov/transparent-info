@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Link from '../src/Link';
 import Head from 'next/head';
-import { AppBar, Toolbar, Typography, Theme, Container } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Theme, Container, useMediaQuery } from '@material-ui/core';
 import { Footer } from './Footer';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { BottomNav } from './BottomNav';
@@ -28,6 +28,7 @@ const Layout: React.FunctionComponent<Props> = ({
   toolbar = null,
 }) => {
   const classes = useStyles();
+  const islargeScreen = useMediaQuery((theme: Theme) => theme.breakpoints.between('lg', 'xl'));
   return (
     <>
       <Head>
@@ -58,7 +59,7 @@ const Layout: React.FunctionComponent<Props> = ({
       </AppBar>
 
       <main className={classes.main}>
-        <Container maxWidth="sm">{children}</Container>
+        <Container maxWidth={islargeScreen ? 'md' : 'sm'}>{children}</Container>
       </main>
       <footer>
         <Footer />
