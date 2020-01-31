@@ -10,11 +10,12 @@ on:
       - releases/**
 
 jobs:
-  build:
+  auto-release:
     runs-on: ubuntu-latest
     env:
       OUT_DIR: ./packages/transparent-info-app/out
       IPNS: /ipns/Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z
+      IPNS_ID: Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z
     steps:
       - name: check prerelease
         if: endsWith(github.event.head_commit.message,':prerelease')
@@ -118,19 +119,24 @@ jobs:
           tag_name: ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
           release_name: Release ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
           body: |
-            # current
-             root CID `${{ env.IPFS_CID }}`
+            # release info
+            |                 |
+            | --------------- |
+            | ASSETS_IPFS_CID | \${{ env.ASSETS_IPFS_CID }} |
+            | ROOT_CID        | \${{ env.IPFS_CID }} |
+            | IPNS            | \${{ env.IPNS_ID }} |
+            # centralized
+            [dncov.fox.mn](https://dncov.fox.mn)
 
-            https://cloudflare-ipfs.com/ipfs/${{ env.IPFS_CID }}
+            # decentralized
+
+            ## global
             https://ipfs.io/ipfs/${{ env.IPFS_CID }}
             https://ipfs.infura.io/ipfs/${{ env.IPFS_CID }}
+
+            ## for chaina
             http://ncov.fox.mn:2020/ipfs/${{ env.IPFS_CID }}
 
-
-            # newest
-            - http://ncov.fox.mn:2020/ipns/Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z
-            - https://ipfs.io/ipns/dncov.fox.mn
-            - https://cloudflare-ipfs.com/ipns/dncov.fox.mn
           draft: false
           prerelease: ${{ env.PRERELEASE }}
       - name: gen file name
@@ -163,3 +169,26 @@ jobs:
           script: |
             #/home/pi/go/bin/ipfs pin add ${{ env.IPFS_CID }}
             /home/pi/go/bin/ipfs name  publish  --key=dncov ${{ env.IPFS_CID }}
+      - name: rebuild-for-centralize
+        run: |
+          echo "IPFS_CID=$IPFS_CID   ASSETS_IPFS_CID=$ASSETS_IPFS_CID"
+          yarn clean
+          yarn gen
+          yarn build
+          yarn export
+      - name: cp to cout
+        run: |
+          cp -r  ${{ env.OUT_DIR }} ./cout
+      - name: upload
+        run: |
+          qshell  qupload2   \
+          --bucket  ${{ secrets.QN_BUCKET }}  \
+          --overwrite  \
+          --src-dir . \
+          --log-file ../upload.log \
+          --thread-count 100
+        working-directory: ./cout
+      - uses: actions/upload-artifact@v1
+        with:
+          name: upload.log
+          path: ./upload.log
