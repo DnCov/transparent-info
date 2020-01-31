@@ -122,9 +122,9 @@ jobs:
             # release summary
             |                 |
             | --------------- |
-            | ASSETS_IPFS_CID | \${{ env.ASSETS_IPFS_CID }} |
-            | ROOT_CID        | \${{ env.IPFS_CID }} |
-            | IPNS            | \${{ env.IPNS_ID }} |
+            | ASSETS_IPFS_CID | ${{ env.ASSETS_IPFS_CID }} |
+            | ROOT_CID        | ${{ env.IPFS_CID }} |
+            | IPNS            | ${{ env.IPNS_ID }} |
             # centralized
             [dncov.fox.mn](https://dncov.fox.mn)
 
