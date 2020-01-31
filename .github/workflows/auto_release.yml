@@ -35,6 +35,7 @@ jobs:
       #     exit 1
       - uses: actions/checkout@v2
         if: env.NEED_RELEASE == 'yes'
+      - run: sudo timedatectl set-timezone Asia/Shanghai
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         if: env.NEED_RELEASE == 'yes'
