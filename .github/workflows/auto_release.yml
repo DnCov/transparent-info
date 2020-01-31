@@ -10,7 +10,7 @@ on:
       - releases/**
 
 jobs:
-  auto-release:
+  release:
     runs-on: ubuntu-latest
     env:
       OUT_DIR: ./packages/transparent-info-app/out
@@ -170,16 +170,19 @@ jobs:
             #/home/pi/go/bin/ipfs pin add ${{ env.IPFS_CID }}
             /home/pi/go/bin/ipfs name  publish  --key=dncov ${{ env.IPFS_CID }}
       - name: rebuild-for-centralize
+        if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         run: |
-          echo "IPFS_CID=$IPFS_CID   ASSETS_IPFS_CID=$ASSETS_IPFS_CID"
+          echo "IPFS_CID=${{ env.IPFS_CID }}   ASSETS_IPFS_CID=${{ env.ASSETS_IPFS_CID }}"
           yarn clean
           yarn gen
           yarn build
           yarn export
       - name: cp to cout
+        if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         run: |
           cp -r  ${{ env.OUT_DIR }} ./cout
       - name: upload
+        if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         run: |
           qshell  qupload2   \
           --bucket  ${{ secrets.QN_BUCKET }}  \
@@ -189,6 +192,7 @@ jobs:
           --thread-count 100
         working-directory: ./cout
       - uses: actions/upload-artifact@v1
+        if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         with:
           name: upload.log
           path: ./upload.log
