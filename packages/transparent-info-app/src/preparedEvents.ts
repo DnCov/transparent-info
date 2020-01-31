@@ -1,4 +1,4 @@
-import { events } from '../timeline';
+import { events } from '../gen/timeline';
 import * as Fecha from 'fecha';
 
 export const preparedEvents = events.map(e => {

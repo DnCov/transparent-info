@@ -5,6 +5,41 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "debug codegen",
+      "type": "node",
+      "request": "launch",
+      "address": "localhost",
+      "protocol": "inspector",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/lerna",
+      "runtimeArgs": ["exec", "--scope", "code-gen", "--", "node"],
+      "env": {
+        "HYGEN_OVERWRITE": "1"
+      },
+      "args": ["-r", "ts-node/register", "main.ts"]
+    },
+
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "debug gencode",
+      "cwd": "${workspaceFolder}/packages/transparent-info-app",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "args": ["${workspaceFolder}/packages/transparent-info-app/scripts/codegen.ts"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "nodemon",
+      "cwd": "${workspaceFolder}/packages/transparent-info-app",
+      "runtimeExecutable": "nodemon",
+      "runtimeArgs": ["-c", "nodemon.gen.json"],
+      "restart": true,
+      "smartStep": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Next: Node",

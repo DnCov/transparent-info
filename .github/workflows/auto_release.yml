@@ -35,6 +35,7 @@ jobs:
       #     exit 1
       - uses: actions/checkout@v2
         if: env.NEED_RELEASE == 'yes'
+      - run: sudo timedatectl set-timezone Asia/Shanghai
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         if: env.NEED_RELEASE == 'yes'
@@ -49,6 +50,7 @@ jobs:
           echo "::set-env name=VERSION::$(cat lerna.json|jq -r .version)"
           yarn
           yarn boot
+          yarn gen
           yarn build
           yarn export
       - name: setup ipfs and add to ipfs network

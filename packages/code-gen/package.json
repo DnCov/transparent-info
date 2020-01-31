@@ -1,0 +1,35 @@
+{
+  "name": "code-gen",
+  "version": "0.1.0",
+  "description": "generate code",
+  "keywords": [
+    "generate"
+  ],
+  "author": "fox <fox@vvfox.com>",
+  "homepage": "https://github.com/DnCov/transparent-info#readme",
+  "license": "GPL-3.0-or-later",
+  "main": "main.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DnCov/transparent-info.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "gen": "HYGEN_OVERWRITE=1 ts-node main.ts"
+  },
+  "bugs": {
+    "url": "https://github.com/DnCov/transparent-info/issues"
+  },
+  "devDependencies": {
+    "hygen": "^5.0.3",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  }
+}
