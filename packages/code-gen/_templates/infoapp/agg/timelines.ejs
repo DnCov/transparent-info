@@ -1,0 +1,22 @@
+---
+to: ../transparent-info-app/gen/timeline.js
+---
+
+/*********************
+
+this is generated code ,donot edit me !!!!!
+
+****************************/
+<% h.timelines.forEach( e => { %>
+import * as N<%= h.changeCase.constant(e) %> from '../timeline/<%- e %>';
+<% }) %> 
+
+
+
+
+export const events = [
+<% h.timelines.forEach( e => { %>
+  N<%= h.changeCase.constant(e) %> ,
+  <% }) %> 
+];
+

@@ -5,6 +5,7 @@
     "packages/*"
   ],
   "scripts": {
+    "gen": "lerna run --scope  code-gen gen",
     "dev": "lerna run dev",
     "debug": "lerna run debug",
     "build": "lerna run build",
