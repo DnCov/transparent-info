@@ -24,7 +24,7 @@
     "start": "next start",
     "debug": "NODE_OPTIONS=--inspect next",
     "type-check": "tsc",
-    "clean": "rmrif .next out gen"
+    "clean": "rimraf .next out gen"
   },
   "bugs": {
     "url": "https://github.com/DnCov/transparent-info/issues"
