@@ -119,7 +119,7 @@ jobs:
           tag_name: ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
           release_name: Release ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
           body: |
-            # release info
+            # release summary
             |                 |
             | --------------- |
             | ASSETS_IPFS_CID | \${{ env.ASSETS_IPFS_CID }} |
