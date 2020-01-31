@@ -50,6 +50,7 @@ jobs:
           echo "::set-env name=VERSION::$(cat lerna.json|jq -r .version)"
           yarn
           yarn boot
+          yarn gen
           yarn build
           yarn export
       - name: setup ipfs and add to ipfs network
