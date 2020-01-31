@@ -9,6 +9,7 @@ const withMDX = require('@next/mdx')({
 
 const assetPrefix = process.env['ASSETS_PREFIX'] || '/';
 const basePath = process.env['BASE_PATH'] || '';
+const onIpfs = process.env['ON_IPFS'];
 
 module.exports = withMDX({
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'tsx'],
@@ -21,6 +22,7 @@ module.exports = withMDX({
   env: {
     ASSETS_PREFIX: assetPrefix,
     BASE_PATH: basePath,
+    ON_IPFS: onIpfs,
   },
   exportPathMap: async function(defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
     return {
