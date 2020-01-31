@@ -1,5 +1,5 @@
 ---
-to: ../transparent-info-app/gen/timeline.js
+to: ../transparent-info-app/gen/timeline.jsx
 ---
 
 /*********************
@@ -8,15 +8,9 @@ this is generated code ,donot edit me !!!!!
 
 ****************************/
 <% h.timelines.forEach( e => { %>
-import * as N<%= h.changeCase.constant(e) %> from '../timeline/<%- e %>';
-<% }) %> 
+import * as N<%= h.changeCase.constant(e) %> from '../timeline/<%- e %>'; <% }) %> 
 
-
-
-
-export const events = [
-<% h.timelines.forEach( e => { %>
-  N<%= h.changeCase.constant(e) %> ,
-  <% }) %> 
+export const events = [ <% h.timelines.forEach( e => { %>
+    N<%= h.changeCase.constant(e) %> , <% }) %> 
 ];
 
