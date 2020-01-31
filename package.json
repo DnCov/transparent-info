@@ -10,7 +10,8 @@
     "debug": "lerna run debug",
     "build": "lerna run build",
     "boot": "lerna bootstrap",
-    "export": "lerna run export"
+    "export": "lerna run export",
+    "clean": "lerna run clean"
   },
   "husky": {
     "hooks": {
