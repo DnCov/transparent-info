@@ -169,6 +169,19 @@ jobs:
           script: |
             #/home/pi/go/bin/ipfs pin add ${{ env.IPFS_CID }}
             /home/pi/go/bin/ipfs name  publish  --key=dncov ${{ env.IPFS_CID }}
+
+      #  ---------------- for centralized release --------------------------------------
+      - name: Setup qshell
+        uses: foxundermoon/setup-qshell@v1
+        if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
+        with:
+          qshell-version: '2.4.0'
+      - name: show qshell version
+        run: qshell version
+      - name: login qshell
+        if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
+        run: |
+          qshell account ${{ secrets.QN_AK }} ${{ secrets.QN_SK }} foxmn
       - name: rebuild-for-centralize
         if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         run: |
