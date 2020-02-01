@@ -196,6 +196,9 @@ jobs:
           VERSION: ${{ env.VERSION }}
           BUILD_NUMBER: ${{ steps.buildnumber.outputs.build_number }}
           ON_IPFS: 'no'
+          ASSETS_IPFS_CID: ${{ env.ASSETS_IPFS_CID }}
+          IPFS_CID: ${{ env.IPFS_CID }}
+
         run: |
           echo "IPFS_CID=${{ env.IPFS_CID }}   ASSETS_IPFS_CID=${{ env.ASSETS_IPFS_CID }}"
           yarn one

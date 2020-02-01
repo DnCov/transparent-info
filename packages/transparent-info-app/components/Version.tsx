@@ -46,11 +46,14 @@ const Splitr = () => {
     </Typography>
   );
 };
+
 export const Version = () => {
   const version = process.env.VERSION;
   const buildNumber = '1' || process.env.BUILDNUMBER;
   const fullVersion = `${version}.${buildNumber}`;
   const sha = process.env.SHA;
+  const isOnIpfs = process.env.ON_IPFS === 'yes';
+  const ipfsCid = process.env.IPFS_CID;
 
   const classes = useStyles();
   return (
@@ -68,6 +71,16 @@ export const Version = () => {
             <Slink sha={sha} />
           </Typography>
         </Tooltip>
+      )}
+      {isOnIpfs && (
+        <>
+          <Splitr />
+          <Tooltip title={`ipfs mirror:  ${ipfsCid}`}>
+            <Typography component="span">
+              <Link href={`https://ipfs.io/ipfs/${ipfsCid}`} />
+            </Typography>
+          </Tooltip>
+        </>
       )}
     </Box>
   );
