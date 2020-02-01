@@ -23,6 +23,9 @@ module.exports = withMDX({
     ASSETS_PREFIX: assetPrefix,
     BASE_PATH: basePath,
     ON_IPFS: onIpfs,
+    VERSION: process.env.VERSION || '0.0.0',
+    BUILD_NUMBER: process.env.BUILD_NUMBER || '1',
+    SHA: process.env.SHA || '2f4f3014d6c21acb1dca65d3cd9e2f072c8cd7ea',
   },
   exportPathMap: async function(defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
     return {
