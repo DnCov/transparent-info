@@ -209,7 +209,7 @@ jobs:
       - name: clear-bucket
         if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         run: |
-          qshell listbucket ${{ secrets.QN_BUCKET }} |awk '{print $1}' -o filelist
+          qshell listbucket ${{ secrets.QN_BUCKET }} -o filelist
           qshell batchdelete  ${{ secrets.QN_BUCKET }}  -y  -i  filelist
 
       - name: upload
