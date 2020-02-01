@@ -7,10 +7,13 @@ to: ../transparent-info-app/gen/timeline.jsx
 this is generated code ,donot edit me !!!!!
 
 ****************************/
+
+import withExtra from '../components/timeline/ItemWrap.tsx'
+
 <% h.timelines.forEach( e => { %>
 import * as N<%= h.changeCase.constant(e) %> from '../timeline/<%- e %>'; <% }) %> 
 
 export const events = [ <% h.timelines.forEach( e => { %>
-    N<%= h.changeCase.constant(e) %> , <% }) %> 
+    withExtra(N<%= h.changeCase.constant(e) %>.default,{fileName: '<%= e %>', icon: N<%= h.changeCase.constant(e) %>.icon , time: N<%= h.changeCase.constant(e) %>.time, title:N<%= h.changeCase.constant(e) %>.title  } ), <% }) %> 
 ];
 
