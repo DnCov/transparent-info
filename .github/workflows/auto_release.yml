@@ -82,7 +82,7 @@ jobs:
           hackCode='/(\\/ip[fn]s\\/[^\\/]+)/.exec(window.location.pathname)[1]'
           sed -i -e "s|\"${{ env.IPNS }}\"|$hackCode|g" $chunk
 
-          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out/ --hidden |tee -a assets_rst.log
+          ./go-ipfs/ipfs  --api=${{ secrets.IPFS_API }} add -r ./out/ --hidden |tee -a assets_rst.log
           ASSETS_IPFS_CID=$(cat  ./assets_rst.log | tail -n 1 | awk '{print $2}')
           echo "::set-env name=ASSETS_IPFS_CID::${ASSETS_IPFS_CID}"
           rm -f ./assets_rst.log
@@ -93,7 +93,7 @@ jobs:
           cp -r "${{ env.OUT_DIR }}" ./out
           rm -rf ./out/_next
           find ./out -type f |xargs -I ^_^  sed -i -e "s|${{ env.IPNS }}|/ipfs/${{ env.ASSETS_IPFS_CID }}|g" ^_^
-          ./go-ipfs/ipfs  --api=/dns4/ncov.fox.mn/tcp/5001 add -r ./out/ --hidden |tee -a rst.log
+          ./go-ipfs/ipfs  --api=${{ secrets.IPFS_API }} add -r ./out/ --hidden |tee -a rst.log
           IPFS_CID=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
           echo "::set-env name=IPFS_CID::${IPFS_CID}" 
           rm -f rst.log
@@ -126,11 +126,11 @@ jobs:
           release_name: Release ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
           body: |
             # release summary
-            |                 |
-            | --------------- |
-            | ASSETS_IPFS_CID | ${{ env.ASSETS_IPFS_CID }} |
-            | ROOT_CID        | ${{ env.IPFS_CID }} |
-            | IPNS            | ${{ env.IPNS_ID }} |
+            |                 |                              |
+            | --------------- |                              |
+            | ASSETS_IPFS_CID | `${{ env.ASSETS_IPFS_CID }}` |
+            | ROOT_CID        | `${{ env.IPFS_CID }}`        |
+            | IPNS            | `${{ env.IPNS_ID }}`         |
             # centralized
             [dncov.fox.mn](https://dncov.fox.mn)
 
@@ -140,7 +140,7 @@ jobs:
             https://ipfs.io/ipfs/${{ env.IPFS_CID }}
             https://ipfs.infura.io/ipfs/${{ env.IPFS_CID }}
 
-            ## for chaina
+            ## for chaina without proxy
             http://ncov.fox.mn:2020/ipfs/${{ env.IPFS_CID }}
 
           draft: false
