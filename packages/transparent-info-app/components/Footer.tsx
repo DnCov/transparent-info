@@ -10,7 +10,7 @@ interface Props {}
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      paddingBottom: 50,
+      paddingBottom: theme.spacing(2),
     },
   })
 );

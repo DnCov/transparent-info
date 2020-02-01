@@ -1,4 +1,6 @@
-import { Typography } from '@material-ui/core';
+import { Typography, Box, Tooltip, Divider } from '@material-ui/core';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+
 import Link from '../src/Link';
 import { FunctionComponent } from 'react';
 import { projectUrl } from '../src/consts';
@@ -21,19 +23,52 @@ const Slink: FunctionComponent<{ sha: string; display?: string }> = ({
   return <Link href={href}>{display} </Link>;
 };
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      textAlign: 'center',
+    },
+    link: {
+      paddingLeft: theme.spacing(1),
+    },
+    spliter: {
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+    },
+  })
+);
+
+const Splitr = () => {
+  const classes = useStyles();
+  return (
+    <Typography className={classes.spliter} component="span">
+      |
+    </Typography>
+  );
+};
 export const Version = () => {
   const version = process.env.VERSION;
-  const fullVersion = `${version}.${process.env.BUILDNUMBER}`;
+  const buildNumber = '1' || process.env.BUILDNUMBER;
+  const fullVersion = `${version}.${buildNumber}`;
   const sha = process.env.SHA;
 
+  const classes = useStyles();
   return (
-    <>
-      {version && <Typography> {<Vlink full={fullVersion} />} </Typography>}
-      {sha && (
-        <Typography>
-          <Slink sha={sha} />{' '}
-        </Typography>
+    <Box className={classes.root}>
+      {version && (
+        <Tooltip title={`version: ${version}  buildNumber: ${buildNumber}`}>
+          <Typography component="span"> {<Vlink full={fullVersion} />} </Typography>
+        </Tooltip>
       )}
-    </>
+
+      <Splitr />
+      {sha && (
+        <Tooltip title={`commit: ${sha}`}>
+          <Typography component="span">
+            <Slink sha={sha} />
+          </Typography>
+        </Tooltip>
+      )}
+    </Box>
   );
 };
