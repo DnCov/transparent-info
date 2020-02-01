@@ -126,22 +126,23 @@ jobs:
           release_name: Release ${{ env.VERSION }}.${{ steps.buildnumber.outputs.build_number }}
           body: |
             # release summary
-            |                 |                              |
-            | --------------- |                              |
-            | ASSETS_IPFS_CID | `${{ env.ASSETS_IPFS_CID }}` |
-            | ROOT_CID        | `${{ env.IPFS_CID }}`        |
-            | IPNS            | `${{ env.IPNS_ID }}`         |
-            # centralized
-            [dncov.fox.mn](https://dncov.fox.mn)
+            |     item        |             value            |
+            | --------------- |   ------------------------   |
+            | assets ipfs CID | `${{ env.ASSETS_IPFS_CID }}` |
+            | entry cid       | `${{ env.IPFS_CID }}`        |
+            |  entry ipns            | `${{ env.IPNS_ID }}`  |
 
-            # decentralized
+            # centralized deployed
+            - [https://dncov.fox.mn](https://dncov.fox.mn)
 
-            ## global
-            https://ipfs.io/ipfs/${{ env.IPFS_CID }}
-            https://ipfs.infura.io/ipfs/${{ env.IPFS_CID }}
+            # decentralized deployed
 
-            ## for chaina without proxy
-            http://ncov.fox.mn:2020/ipfs/${{ env.IPFS_CID }}
+            ## global access
+            - https://ipfs.io/ipfs/${{ env.IPFS_CID }}
+            - https://ipfs.infura.io/ipfs/${{ env.IPFS_CID }}
+
+            ## in Chaina without proxy
+            - http://ncov.fox.mn:2020/ipfs/${{ env.IPFS_CID }}
 
           draft: false
           prerelease: ${{ env.PRERELEASE }}
@@ -229,5 +230,16 @@ jobs:
           path: ./upload.log
       - name: refresh-cdn
         if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
+        working-directory: ./cout
         run: |
-          qshell cdnrefresh  https://fox.mn/index.html
+          find . | grep -v '^./_next' |sed  -e 's|./|https://dncov.fox.mn/|' | sed  -n '1d;p'  | qshell cdnrefresh
+
+      # --------------------- do last  refresh ipfs ----------------------------
+      - name: refresh ipfs
+        if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
+        run: |
+          curl https://ipfs.io/ipfs/${{ env.IPFS_CID }} &
+          curl https://ipfs.infura.io/ipfs/${{ env.IPFS_CID }} &
+          curl https://cloudflare-ipfs.com/ipfs/${{ env.IPFS_CID }} &
+          sleep 10
+          echo 'wait some second'
