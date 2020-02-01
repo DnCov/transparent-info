@@ -203,6 +203,12 @@ jobs:
         if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         run: |
           cp -r  ${{ env.OUT_DIR }} ./cout
+      - name: clear-bucket
+        if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
+        run: |
+          qshell listbucket ${{ secrets.QN_BUCKET }} |awk '{print $1}' -o filelist
+          qshell batchdelete  ${{ secrets.QN_BUCKET }}  -y  -i  filelist
+
       - name: upload
         if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         run: |
@@ -218,3 +224,7 @@ jobs:
         with:
           name: upload.log
           path: ./upload.log
+      - name: refresh-cdn
+        if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
+        run: |
+          qshell cdnrefresh  https://fox.mn/index.html
