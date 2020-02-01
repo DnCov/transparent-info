@@ -36,24 +36,35 @@ jobs:
       #     exit 1
       - uses: actions/checkout@v2
         if: env.NEED_RELEASE == 'yes'
+
+      # -----------------  build number ----------------------------------------
+      - name: Generate build number
+        if: env.NEED_RELEASE == 'yes'
+        id: buildnumber
+        uses: einaregilsson/build-number@v2
+        with:
+          token: ${{secrets.github_token}}
+      - name: set version env
+        run: |
+          echo "::set-env name=VERSION::$(cat lerna.json|jq -r .version)"
       - run: sudo timedatectl set-timezone Asia/Shanghai
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         if: env.NEED_RELEASE == 'yes'
         with:
           node-version: 12.x
-      - name: build and export
+      # ------------------------- release for ipfs ------------------------------
+      - name: build and export for ipfs
         if: env.NEED_RELEASE == 'yes'
         env:
           ASSETS_PREFIX: ${{ env.IPNS }}
           BASE_PATH: ${{ env.IPNS }}
+          VERSION: ${{ env.VERSION }}
+          BUILD_NUMBER: ${{ steps.buildnumber.outputs.build_number }}
+          ON_IPFS: 'yes'
         run: |
           echo "::set-env name=VERSION::$(cat lerna.json|jq -r .version)"
-          yarn
-          yarn boot
-          yarn gen
-          yarn build
-          yarn export
+          yarn one
       - name: setup ipfs and add to ipfs network
         if: env.NEED_RELEASE == 'yes'
         run: |
@@ -103,12 +114,7 @@ jobs:
           rid=537502021
           sname="latest.dncov"
           curl -X POST https://dnsapi.cn/Record.Modify -d "login_token=$dt&format=json&domain_id=$domain_id&record_id=$rid&sub_domain=$sname&value=dnslink=/ipfs/${{ env.IPFS_CID }}&record_type=TXT&record_line_id=10%3D0"
-      - name: Generate build number
-        if: env.NEED_RELEASE == 'yes'
-        id: buildnumber
-        uses: einaregilsson/build-number@v2
-        with:
-          token: ${{secrets.github_token}}
+
       - name: Create Release
         if: env.NEED_RELEASE == 'yes'
         id: create_release
@@ -170,13 +176,14 @@ jobs:
             #/home/pi/go/bin/ipfs pin add ${{ env.IPFS_CID }}
             /home/pi/go/bin/ipfs name  publish  --key=dncov ${{ env.IPFS_CID }}
 
-      #  ---------------- for centralized release --------------------------------------
+      #  ---------------- release for centralized --------------------------------------
       - name: Setup qshell
         uses: foxundermoon/setup-qshell@v1
         if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         with:
           qshell-version: '2.4.0'
       - name: show qshell version
+        if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         run: qshell version
       - name: login qshell
         if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
@@ -184,12 +191,14 @@ jobs:
           qshell account ${{ secrets.QN_AK }} ${{ secrets.QN_SK }} foxmn
       - name: rebuild-for-centralize
         if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
+        env:
+          SHA: ${{ github.sha }}
+          VERSION: ${{ env.VERSION }}
+          BUILD_NUMBER: ${{ steps.buildnumber.outputs.build_number }}
+          ON_IPFS: 'no'
         run: |
           echo "IPFS_CID=${{ env.IPFS_CID }}   ASSETS_IPFS_CID=${{ env.ASSETS_IPFS_CID }}"
-          yarn clean
-          yarn gen
-          yarn build
-          yarn export
+          yarn one
       - name: cp to cout
         if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         run: |

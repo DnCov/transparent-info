@@ -6,12 +6,13 @@
   ],
   "scripts": {
     "gen": "lerna run --scope  code-gen gen",
-    "dev": "lerna run dev",
-    "debug": "lerna run debug",
-    "build": "lerna run build",
+    "dev": "lerna run dev --stream",
+    "debug": "lerna run debug --stream",
+    "build": "lerna run build --stream",
     "boot": "lerna bootstrap",
-    "export": "lerna run export",
-    "clean": "lerna run clean"
+    "export": "lerna run export --stream",
+    "clean": "lerna run clean --stream",
+    "one": "npx lerna bootstrap && lerna run gen --stream && lerna run build --stream && lerna run export --stream"
   },
   "husky": {
     "hooks": {
