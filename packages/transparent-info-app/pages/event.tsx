@@ -1,5 +1,5 @@
 import Layout from '../components/Layout';
-import { TimeLineEvent } from '../components/TimeLine';
+import { TimeLineEvent } from '../components/timeline/TimeLine';
 import { Container, Fab, Theme, Tooltip } from '@material-ui/core';
 import React, { useState } from 'react';
 import { SortBy } from '../src/consts';
