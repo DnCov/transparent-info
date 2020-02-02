@@ -233,7 +233,11 @@ jobs:
         if: env.NEED_RELEASE == 'yes' && env.RELEASE_TYPE == 'release'
         working-directory: ./cout
         run: |
-          find . | grep -v '^./_next' |sed  -e 's|./|https://dncov.fox.mn/|' | sed  -n '1d;p'  | qshell cdnrefresh
+          find . | grep -v '^./_next' | \
+          sed  -e 's|./|https://dncov.fox.mn/|' | \
+          sed  -n '1d;p'  | \
+          tee -a refresh.xt | \
+          qshell cdnrefresh
 
       # --------------------- do last  refresh ipfs ----------------------------
       - name: refresh ipfs
