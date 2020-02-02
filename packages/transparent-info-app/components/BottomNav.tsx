@@ -35,7 +35,7 @@ export function BottomNav() {
         <BottomNavigationAction label="经过" value="/event" icon={<RestoreIcon />} />
         <BottomNavigationAction label="文章" value="/postlist" icon={<ListIcon />} />
         <BottomNavigationAction label="捐赠" value="/donation" icon={<EmojiPeopleIcon />} />
-        <BottomNavigationAction label="关于" value="/about" icon={<InfoIcon />} />
+        {/* <BottomNavigationAction label="关于" value="/about" icon={<InfoIcon />} /> */}
       </BottomNavigation>
     </Container>
   );

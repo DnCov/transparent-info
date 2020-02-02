@@ -28,7 +28,7 @@ export const PostList: FunctionComponent<Props> = ({ posts }) => {
   return (
     <List>
       {posts.map((e, i) => (
-        <ListItem>
+        <ListItem key={i}>
           <Link
             passHref={false}
             onClick={(evt: React.MouseEvent) => handleLinkClick(evt, e.href)}

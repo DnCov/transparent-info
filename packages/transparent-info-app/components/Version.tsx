@@ -12,7 +12,11 @@ interface VlinkProps {
 
 const Vlink: FunctionComponent<VlinkProps> = ({ full, display = full }) => {
   const href = `${projectUrl}/releases/tag/${full}`;
-  return <Link href={href}>{full} </Link>;
+  return (
+    <Link href={href} prefetch={false}>
+      {full}{' '}
+    </Link>
+  );
 };
 
 const Slink: FunctionComponent<{ sha: string; display?: string }> = ({
@@ -20,7 +24,11 @@ const Slink: FunctionComponent<{ sha: string; display?: string }> = ({
   display = sha.substring(0, 7),
 }) => {
   const href = `${projectUrl}/commit/${sha}`;
-  return <Link href={href}>{display} </Link>;
+  return (
+    <Link href={href} prefetch={false}>
+      {display}{' '}
+    </Link>
+  );
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -52,7 +60,7 @@ export const Version = () => {
   const buildNumber = '1' || process.env.BUILDNUMBER;
   const fullVersion = `${version}.${buildNumber}`;
   const sha = process.env.SHA;
-  const isOnIpfs = process.env.ON_IPFS === 'yes';
+  const showIpfsVersion = process.env.ON_IPFS === 'no';
   const ipfsCid = process.env.IPFS_CID;
 
   const classes = useStyles();
@@ -72,12 +80,12 @@ export const Version = () => {
           </Typography>
         </Tooltip>
       )}
-      {isOnIpfs && (
+      {showIpfsVersion && (
         <>
           <Splitr />
-          <Tooltip title={`ipfs mirror:  ${ipfsCid}`}>
+          <Tooltip title={`published on ipfs:  ${ipfsCid}`}>
             <Typography component="span">
-              <Link href={`https://ipfs.io/ipfs/${ipfsCid}`} />
+              <Link href={`https://ipfs.io/ipfs/${ipfsCid}`}>{ipfsCid}</Link>
             </Typography>
           </Tooltip>
         </>

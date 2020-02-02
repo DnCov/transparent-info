@@ -1,16 +1,16 @@
-import { FunctionComponent } from "react";
-import { Typography, Theme, Tooltip, Container } from "@material-ui/core";
-import Link from "../src/Link";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { FunctionComponent } from 'react';
+import { Typography, Theme, Tooltip, Container } from '@material-ui/core';
+import Link from '../src/Link';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      textAlign: "center"
+      textAlign: 'center',
     },
     link: {
-      paddingLeft: theme.spacing(1)
-    }
+      paddingLeft: theme.spacing(1),
+    },
   })
 );
 
