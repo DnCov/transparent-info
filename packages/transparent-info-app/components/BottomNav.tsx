@@ -11,6 +11,7 @@ import Link from '../src/Link';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
 import { baseUrl } from './ipfs/Env';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles({
   root: {
@@ -28,6 +29,11 @@ export function BottomNav() {
     setValue(newValue);
     router.push(`${baseUrl}${newValue}`);
   };
+  useEffect(() => {
+    ['/event', '/postlist', '/donation'].forEach(e => {
+      router.prefetch(e);
+    });
+  }, []);
 
   return (
     <Container className={classes.root}>
