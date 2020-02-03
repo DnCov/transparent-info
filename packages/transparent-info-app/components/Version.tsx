@@ -1,7 +1,7 @@
 import { Typography, Box, Tooltip, Divider } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-import Link from '../src/Link';
+import Link from '@material-ui/core/Link';
 import { FunctionComponent } from 'react';
 import { projectUrl } from '../src/consts';
 
@@ -12,11 +12,7 @@ interface VlinkProps {
 
 const Vlink: FunctionComponent<VlinkProps> = ({ full, display = full }) => {
   const href = `${projectUrl}/releases/tag/${full}`;
-  return (
-    <Link href={href} prefetch={false}>
-      {full}{' '}
-    </Link>
-  );
+  return <Link href={href}>{full} </Link>;
 };
 
 const Slink: FunctionComponent<{ sha: string; display?: string }> = ({
@@ -24,11 +20,7 @@ const Slink: FunctionComponent<{ sha: string; display?: string }> = ({
   display = sha.substring(0, 7),
 }) => {
   const href = `${projectUrl}/commit/${sha}`;
-  return (
-    <Link href={href} prefetch={false}>
-      {display}{' '}
-    </Link>
-  );
+  return <Link href={href}>{display} </Link>;
 };
 
 const useStyles = makeStyles((theme: Theme) =>
