@@ -62,12 +62,10 @@ jobs:
         env:
           ASSETS_PREFIX: ${{ env.ASSETS_PREFIX_PLACEHOLDER }}
           BASE_PATH: ${{ env.BASE_PATH_PLACEHOLDER }}
-          VERSION: ${{ env.VERSION }}
           BUILD_NUMBER: ${{ steps.buildnumber.outputs.build_number }}
           ON_IPFS: 'yes'
         run: |
-          echo "::set-env name=VERSION::$(cat lerna.json|jq -r .version)"
-          VERSION='${{ env.VERSION }}'  BUILD_NUMBER='${{ steps.buildnumber.outputs.build_number }}' yarn one
+          yarn one
       - name: setup ipfs and add to ipfs network
         if: env.NEED_RELEASE == 'yes'
         run: |

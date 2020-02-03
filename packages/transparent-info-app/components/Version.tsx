@@ -57,7 +57,7 @@ const Splitr = () => {
 
 export const Version = () => {
   const version = process.env.VERSION;
-  const buildNumber = '1' || process.env.BUILDNUMBER;
+  const buildNumber = '1' || process.env.BUILD_NUMBER;
   const fullVersion = `${version}.${buildNumber}`;
   const sha = process.env.SHA;
   const showIpfsVersion = process.env.ON_IPFS === 'no';
