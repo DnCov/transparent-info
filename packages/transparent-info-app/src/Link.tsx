@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 import MuiLink, { LinkProps as MuiLinkProps } from '@material-ui/core/Link';
+import { caculateBaseUrl } from './config';
 
 type NextComposedProps = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> &
   NextLinkProps;
@@ -67,9 +68,9 @@ function Link(props: LinkProps) {
     finalHref = tmpHref;
   } else {
     if (tmpHref.startsWith('/')) {
-      finalHref = `${process.env.BASE_PATH}${tmpHref}`;
+      finalHref = `${caculateBaseUrl()}${tmpHref}`;
     } else {
-      finalHref = `${process.env.BASE_PATH}/${tmpHref}`;
+      finalHref = `${caculateBaseUrl()}/${tmpHref}`;
     }
   }
   return (

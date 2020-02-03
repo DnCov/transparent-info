@@ -1,4 +1,5 @@
 import { isIpfsResource, getIpfsBasePath } from '../components/ipfs/Env';
+
 export const ipfsGateways = ['http://ncov.fox.mn:2020'];
 
 export function getBaseUrl() {
@@ -26,4 +27,13 @@ export function isExternalUrl(url: string | undefined | null) {
   }
 
   return false;
+}
+
+export function caculateBaseUrl() {
+  if (typeof window !== 'undefined') {
+    if (isIpfsResource(window.location.href)) {
+      return getIpfsBasePath(window.location.href);
+    }
+  }
+  return '';
 }
