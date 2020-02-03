@@ -15,7 +15,11 @@ const onIpfs = process.env.ON_IPFS || 'no';
 const ipfsCid = process.env.IPFS_CID || 'QmZkzXEuC2QXt6u7AoKjA1HTKenB3XLaJLsBq83LpwkdtL';
 const assetsIpfsCid =
   process.env.ASSETS_IPFS_CID || 'QmVa2eNDbVihmTNXshFnHLLjVz9uGUWHkMfsaNoXt83TKc';
-console.log(`assetPrefix: [${assetPrefix}]  basePath: [${basePath}] `);
+
+const exportTrailingSlash = onIpfs !== 'no';
+console.log(
+  `assetPrefix: [${assetPrefix}]  basePath: [${basePath}] onIpfs: ${onIpfs} exportTrailingSlash: ${exportTrailingSlash} `
+);
 module.exports = withMDX({
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'tsx'],
   assetPrefix: assetPrefix,
@@ -23,7 +27,7 @@ module.exports = withMDX({
   experimental: {
     basePath: basePath,
   },
-  exportTrailingSlash: !onIpfs === 'no',
+  exportTrailingSlash,
   env: {
     ASSETS_PREFIX: assetPrefix,
     BASE_PATH: basePath,
