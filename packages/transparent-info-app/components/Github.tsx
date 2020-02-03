@@ -25,14 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const EditMe: FunctionComponent<EditMeProps> = ({
-  path,
-  title = '编辑此页',
-  btn = false,
-  newtab = true,
-}) => {
-  const classes = useStyles();
-  const router = useRouter();
+export function getEditUrl(path: string) {
   let realPath;
   if (path.startsWith('packages')) {
     realPath = `/${path}`;
@@ -43,8 +36,19 @@ export const EditMe: FunctionComponent<EditMeProps> = ({
   } else {
     realPath = `/${basePath}/${path}`;
   }
+  return `${projectUrl}/edit/master${realPath}`;
+}
 
-  const full = `${projectUrl}/edit/master${realPath}`;
+export const EditMe: FunctionComponent<EditMeProps> = ({
+  path,
+  title = '编辑此页',
+  btn = false,
+  newtab = true,
+}) => {
+  const classes = useStyles();
+  const router = useRouter();
+
+  const full = getEditUrl(path);
   const target = newtab ? '_blank' : undefined;
 
   if (btn) {

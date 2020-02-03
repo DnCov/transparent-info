@@ -9,7 +9,11 @@ const withMDX = require('@next/mdx')({
 
 const assetPrefix = process.env['ASSETS_PREFIX'] || '/';
 const basePath = process.env['BASE_PATH'] || '';
+const onIpfs = process.env.ON_IPFS || 'no';
 
+const ipfsCid = process.env.IPFS_CID || 'QmZkzXEuC2QXt6u7AoKjA1HTKenB3XLaJLsBq83LpwkdtL';
+const assetsIpfsCid =
+  process.env.ASSETS_IPFS_CID || 'QmVa2eNDbVihmTNXshFnHLLjVz9uGUWHkMfsaNoXt83TKc';
 console.log(`assetPrefix: [${assetPrefix}]  basePath: [${basePath}] `);
 module.exports = withMDX({
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'tsx'],
@@ -18,17 +22,16 @@ module.exports = withMDX({
   experimental: {
     basePath: basePath,
   },
-  exportTrailingSlash: true,
+  exportTrailingSlash: !onIpfs === 'no',
   env: {
     ASSETS_PREFIX: assetPrefix,
     BASE_PATH: basePath,
-    ON_IPFS: process.env.ON_IPFS || 'no',
+    ON_IPFS: onIpfs,
     VERSION: process.env.VERSION || '0.0.0',
     BUILD_NUMBER: process.env.BUILD_NUMBER || '1',
     SHA: process.env.SHA || '2f4f3014d6c21acb1dca65d3cd9e2f072c8cd7ea',
-    IPFS_CID: process.env.IPFS_CID || 'QmZkzXEuC2QXt6u7AoKjA1HTKenB3XLaJLsBq83LpwkdtL',
-    ASSETS_IPFS_CID:
-      process.env.ASSETS_IPFS_CID || 'QmVa2eNDbVihmTNXshFnHLLjVz9uGUWHkMfsaNoXt83TKc',
+    IPFS_CID: ipfsCid,
+    ASSETS_IPFS_CID: assetsIpfsCid,
   },
   exportPathMap: async function(defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
     return {

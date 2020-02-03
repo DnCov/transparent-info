@@ -24,7 +24,7 @@ export default function withExtra(WrapComponent: any, extra: WrapExtra) {
   return [
     (props: any) => (
       <TimelineEvent
-        title={<EventTitle> {props.title || extra.title}</EventTitle>}
+        title={<EventTitle fileName={extra.fileName}> {props.title || extra.title}</EventTitle>}
         createdAt={<EventTime date={date} />}
         icon={<EventIcon icon={props.icon || extra.icon} />}
       >

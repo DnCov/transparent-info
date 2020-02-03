@@ -5,6 +5,8 @@ import React, { useState, useReducer } from 'react';
 import SortIcon from '@material-ui/icons/Sort';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
+import { EditOutlined as EditIcon } from '@material-ui/icons';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     fab: {
@@ -45,7 +47,6 @@ function changeSortReduce(state: State, action: Action) {
 
 export default () => {
   const [state, dispatch] = useReducer(changeSortReduce, initState);
-
   const classes = useStyles();
 
   const changeSort = (e: React.MouseEvent) => {
@@ -54,15 +55,14 @@ export default () => {
 
   return (
     <Layout title="事件经过">
-      <Typography>如果要添加请点击编辑</Typography>
+      <Typography>如果要添加请点击下面{<EditIcon />}编辑</Typography>
       <Typography component="span">改变排序点击右下角</Typography>
       <IconButton onClick={changeSort}>
         <SortIcon color={state.desc ? 'secondary' : 'primary'} />
       </IconButton>
       <Typography component="span">按钮</Typography>
-
       <Divider />
-      <Typography> {state.desc ? '当前时间发生的顺序展示' : '最近发生优先展示'} </Typography>
+      <Typography> {state.desc ? '时间发生的顺序展示' : '最近发生优先展示'} </Typography>
       <TimeLineEvent desc={state.desc} />
       <Tooltip title={state.desc ? '改为时间发生的顺序' : '最近发生优先展示'}>
         <Fab onClick={changeSort} className={classes.fab}>
