@@ -239,6 +239,7 @@ jobs:
           sed  -n '1d;p'  | \
           tee -a refresh.xt | \
           qshell cdnrefresh
+          echo 'https://dncov.fox.mn' |qshell cdnrefresh
 
       # --------------------- do last  refresh ipfs ----------------------------
       - name: refresh ipfs
