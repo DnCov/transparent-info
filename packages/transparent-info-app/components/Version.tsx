@@ -12,7 +12,11 @@ interface VlinkProps {
 
 const Vlink: FunctionComponent<VlinkProps> = ({ full, display = full }) => {
   const href = `${projectUrl}/releases/tag/${full}`;
-  return <Link href={href}>{full} </Link>;
+  return (
+    <Link href={href} target="_blank">
+      {full}
+    </Link>
+  );
 };
 
 const Slink: FunctionComponent<{ sha: string; display?: string }> = ({
@@ -20,7 +24,11 @@ const Slink: FunctionComponent<{ sha: string; display?: string }> = ({
   display = sha.substring(0, 7),
 }) => {
   const href = `${projectUrl}/commit/${sha}`;
-  return <Link href={href}>{display} </Link>;
+  return (
+    <Link href={href} target="_blank">
+      {display}{' '}
+    </Link>
+  );
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -74,10 +82,12 @@ export const Version = () => {
       )}
       {showIpfsVersion && (
         <>
-          <Splitr />
+          {/* <Divider /> */}
           <Tooltip title={`published on ipfs:  ${ipfsCid}`}>
             <Typography component="span">
-              <Link href={`https://ipfs.io/ipfs/${ipfsCid}`}>{ipfsCid}</Link>
+              <Link href={`https://ipfs.io/ipfs/${ipfsCid}`} target="_blank">
+                {ipfsCid}
+              </Link>
             </Typography>
           </Tooltip>
         </>

@@ -10,7 +10,7 @@ interface Props {}
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      paddingBottom: theme.spacing(2),
+      paddingBottom: theme.spacing(1),
     },
   })
 );
@@ -19,7 +19,6 @@ export const Footer: FunctionComponent<Props> = () => {
   return (
     <Container maxWidth="sm" className={classes.root}>
       <Copyright />
-      <Version />
     </Container>
   );
 };
