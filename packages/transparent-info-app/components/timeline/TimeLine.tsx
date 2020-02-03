@@ -6,32 +6,35 @@ import { events } from '../../gen/timeline';
 import { Box, Paper, Icon, Typography } from '@material-ui/core';
 import { Component, FunctionComponent, useEffect } from 'react';
 
-import { SortBy } from '../../src/consts';
 import { EventTitle } from './EventTitle';
 import { EventIcon } from './EventIcon';
 import { EventTime } from './EventTime';
+import { WrapExtra } from './ItemWrap';
 
 interface TimeLineEventProps {
-  sortBy: SortBy;
+  desc: boolean;
 }
 
-export const TimeLineEvent: FunctionComponent<TimeLineEventProps> = ({ sortBy }) => {
+export const TimeLineEvent: FunctionComponent<TimeLineEventProps> = ({ desc }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [sortBy]);
+  }, [desc]);
+
+  const sorted = events.sort((p, u) => {
+    if (desc) {
+      return p[1]._ts - u[1]._ts;
+    } else {
+      return u[1]._ts - p[1]._ts;
+    }
+  });
   return (
-    <Timeline>
-      {events
-        .sort((p, u) => {
-          if (sortBy === SortBy.Asc) {
-            return p._ts - u._ts;
-          } else {
-            return u._ts - p._ts;
-          }
-        })
-        .map((E, i) => (
-          <E key={i} />
-        ))}
-    </Timeline>
+    <div>
+      <Timeline>
+        {sorted.map((e, i) => {
+          const [Item, extra]: [FunctionComponent, WrapExtra] = [e][0];
+          return <Item key={extra.fileName} />;
+        })}
+      </Timeline>
+    </div>
   );
 };

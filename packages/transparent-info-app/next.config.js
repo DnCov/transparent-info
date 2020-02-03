@@ -10,6 +10,7 @@ const withMDX = require('@next/mdx')({
 const assetPrefix = process.env['ASSETS_PREFIX'] || '/';
 const basePath = process.env['BASE_PATH'] || '';
 
+console.log(`assetPrefix: [${assetPrefix}]  basePath: [${basePath}] `);
 module.exports = withMDX({
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'tsx'],
   assetPrefix: assetPrefix,

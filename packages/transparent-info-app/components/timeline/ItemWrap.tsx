@@ -5,7 +5,7 @@ import * as Fecha from 'fecha';
 import { EventTitle } from './EventTitle';
 import { EventTime } from './EventTime';
 import { EventIcon } from './EventIcon';
-interface WrapExtra {
+export interface WrapExtra {
   fileName: string;
   time: string;
   title: string;
@@ -21,13 +21,20 @@ export default function withExtra(WrapComponent: any, extra: WrapExtra) {
   const { time } = extra;
   const date = Fecha.parse(time, 'YYYY-MM-DD ZZ');
   const _ts = date?.valueOf();
-  return (props: any) => (
-    <TimelineEvent
-      title={<EventTitle> {props.title || extra.title}</EventTitle>}
-      createdAt={<EventTime date={date} />}
-      icon={<EventIcon icon={props.icon || extra.icon} />}
-    >
-      <WrapComponent {...extra} {...props} _ts={_ts} date={date} />
-    </TimelineEvent>
-  );
+  return [
+    (props: any) => (
+      <TimelineEvent
+        title={<EventTitle> {props.title || extra.title}</EventTitle>}
+        createdAt={<EventTime date={date} />}
+        icon={<EventIcon icon={props.icon || extra.icon} />}
+      >
+        <WrapComponent {...extra} {...props} _ts={_ts} date={date} />
+      </TimelineEvent>
+    ),
+    {
+      ...extra,
+      date,
+      _ts,
+    },
+  ];
 }
