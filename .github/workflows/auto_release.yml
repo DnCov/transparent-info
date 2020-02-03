@@ -17,6 +17,8 @@ jobs:
       IPNS: /ipns/Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z
       IPNS_ID: Qmd3HzpnpSsLeUQF2mJEXn24a1yYo2LTaQyoq4mwxkse1Z
       CLEAR_BUCKET: 'no'
+      BASE_PATH_PLACEHOLDER: /base-path-place-holder/base-path-place-holder
+      ASSETS_PREFIX_PLACEHOLDER: /assets-prefix-place-holder/assets-prefix-place-holder
     steps:
       - name: check prerelease
         if: endsWith(github.event.head_commit.message,':prerelease')
@@ -58,8 +60,8 @@ jobs:
       - name: build and export for ipfs
         if: env.NEED_RELEASE == 'yes'
         env:
-          ASSETS_PREFIX: ${{ env.IPNS }}
-          BASE_PATH: ${{ env.IPNS }}
+          ASSETS_PREFIX: ${{ env.ASSETS_PREFIX_PLACEHOLDER }}
+          BASE_PATH: ${{ env.BASE_PATH_PLACEHOLDER }}
           VERSION: ${{ env.VERSION }}
           BUILD_NUMBER: ${{ steps.buildnumber.outputs.build_number }}
           ON_IPFS: 'yes'
@@ -78,10 +80,9 @@ jobs:
           find ./out ! -path ./out  |egrep -v _next |xargs rm -rf
 
           # replace basePath
-          chunk=$(grep -R '${{ env.IPNS }}' ./out |awk -F ':' '{print $1}')
-          echo "will edit $chunk"
           hackCode='/(\\/ip[fn]s\\/[^\\/]+)/.exec(window.location.pathname)[1]'
-          sed -i -e "s|\"${{ env.IPNS }}\"|$hackCode|g" $chunk
+          grep -Rl '${{ env.BASE_PATH_PLACEHOLDER }}' ./out | \
+          xargs -I ^_^   sed -i -e "s|\"${{ env.BASE_PATH_PLACEHOLDER }}\"|$hackCode|g"  ^_^
 
           ./go-ipfs/ipfs  --api=${{ secrets.IPFS_API }} add -r ./out/ --hidden |tee -a assets_rst.log
           ASSETS_IPFS_CID=$(cat  ./assets_rst.log | tail -n 1 | awk '{print $2}')
@@ -93,7 +94,8 @@ jobs:
         run: |
           cp -r "${{ env.OUT_DIR }}" ./out
           rm -rf ./out/_next
-          find ./out -type f |xargs -I ^_^  sed -i -e "s|${{ env.IPNS }}|/ipfs/${{ env.ASSETS_IPFS_CID }}|g" ^_^
+          grep -Rl "${{ env.ASSETS_PREFIX_PLACEHOLDER }}" | \
+          xargs -I ^_^  sed -i -e "s|${{ env.ASSETS_PREFIX_PLACEHOLDER }}|/ipfs/${{ env.ASSETS_IPFS_CID }}|g" ^_^
           ./go-ipfs/ipfs  --api=${{ secrets.IPFS_API }} add -r ./out/ --hidden |tee -a rst.log
           IPFS_CID=$(cat  ./rst.log | tail -n 1 | awk '{print $2}')
           echo "::set-env name=IPFS_CID::${IPFS_CID}" 
