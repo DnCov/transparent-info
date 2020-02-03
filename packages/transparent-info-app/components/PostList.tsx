@@ -4,7 +4,6 @@ import { NextPage, NextPageContext } from 'next';
 import { Container, ListItem, List } from '@material-ui/core';
 import { postsList } from '../pages/posts/index';
 import Link from '../src/Link';
-import { baseUrl } from '../components/ipfs/Env';
 // import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FunctionComponent } from 'react';

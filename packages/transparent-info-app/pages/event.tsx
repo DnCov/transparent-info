@@ -1,6 +1,6 @@
 import Layout from '../components/Layout';
 import { TimeLineEvent } from '../components/timeline/TimeLine';
-import { Container, Fab, Theme, Tooltip, Typography } from '@material-ui/core';
+import { Container, Fab, Theme, Tooltip, Typography, IconButton, Divider } from '@material-ui/core';
 import React, { useState, useReducer } from 'react';
 import SortIcon from '@material-ui/icons/Sort';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
@@ -55,7 +55,14 @@ export default () => {
   return (
     <Layout title="事件经过">
       <Typography>如果要添加请点击编辑</Typography>
-      <Typography> {state.desc ? '倒序' : '顺序'} </Typography>
+      <Typography component="span">改变排序点击右下角</Typography>
+      <IconButton onClick={changeSort}>
+        <SortIcon color={state.desc ? 'secondary' : 'primary'} />
+      </IconButton>
+      <Typography component="span">按钮</Typography>
+
+      <Divider />
+      <Typography> {state.desc ? '当前时间发生的顺序展示' : '最近发生优先展示'} </Typography>
       <TimeLineEvent desc={state.desc} />
       <Tooltip title={state.desc ? '改为时间发生的顺序' : '最近发生优先展示'}>
         <Fab onClick={changeSort} className={classes.fab}>

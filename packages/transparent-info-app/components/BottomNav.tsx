@@ -10,15 +10,35 @@ import { List as ListIcon, Info as InfoIcon } from '@material-ui/icons';
 import Link from '../src/Link';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
-import { baseUrl } from './ipfs/Env';
 import { useEffect } from 'react';
+import { getFullUrl } from '../src/config';
 
 const useStyles = makeStyles({
   root: {
     position: 'sticky',
     bottom: 0,
   },
+  hidden: {
+    visibility: 'hidden',
+    height: 0,
+  },
 });
+
+const entrys = ['/event', '/postlist', '/donation'];
+
+const HiddenPrefetch = () => {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.hidden}>
+      {entrys.map((e, i) => (
+        <Link key={i} href={e}>
+          {e}{' '}
+        </Link>
+      ))}
+    </div>
+  );
+};
 
 export function BottomNav() {
   const classes = useStyles();
@@ -27,16 +47,12 @@ export function BottomNav() {
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     setValue(newValue);
-    router.push(`${baseUrl}${newValue}`);
+    router.push(newValue);
   };
-  useEffect(() => {
-    ['/event', '/postlist', '/donation'].forEach(e => {
-      router.prefetch(e);
-    });
-  }, []);
 
   return (
     <Container className={classes.root}>
+      <HiddenPrefetch />
       <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
         <BottomNavigationAction label="经过" value="/event" icon={<RestoreIcon />} />
         <BottomNavigationAction label="文章" value="/postlist" icon={<ListIcon />} />

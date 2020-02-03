@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ipfsGateways } from '../../src/config';
 
-export let baseUrl = '';
-
 type MediaElement = HTMLImageElement | HTMLAudioElement | HTMLVideoElement;
 
 interface WithSrc {
@@ -19,40 +17,12 @@ function checkReplaceSrc(e: WithSrc) {
   }
 }
 
-function replaceAssetsSrc() {
-  document.querySelectorAll('script').forEach(e => {
-    if (e.src) {
-      if (isIpfsResource(e.src)) {
-        e.src = e.src.replace(/\/ip[fn]s\/[^\/]+/, baseUrl);
-      } else {
-        e.src = `${baseUrl}${e.src}`;
-      }
-    }
-  });
-
-  document.querySelectorAll('link').forEach(e => {
-    if (e.href) {
-      if (isIpfsResource(e.href)) {
-        e.href = e.href.replace(/\/ip[fn]s\/[^\/]+/, baseUrl);
-      } else {
-        e.href = `${baseUrl}${e.href}`;
-      }
-    }
-  });
-}
-
 export function getIpfsBasePath(urlOrPath: string) {
   const groups = /(\/ip[fn]s\/[^\/]+)/.exec(urlOrPath);
   if (groups && groups.length > 0) {
     return groups[1];
   }
   return '';
-}
-
-function currentAssetsPath() {
-  const path = document.location.pathname;
-  baseUrl = getIpfsBasePath(path);
-  console.log(baseUrl);
 }
 
 export const EnvChecker = () => {
