@@ -71,16 +71,16 @@ jobs:
         run: |
           wget https://github.com/ipfs/go-ipfs/releases/download/v0.4.22/go-ipfs_v0.4.22_linux-amd64.tar.gz
           tar -xf ./go-ipfs_v0.4.22_linux-amd64.tar.gz
-      - name: add to ipfs
+      - name: add assets to ipfs
         if: env.NEED_RELEASE == 'yes'
         run: |
           cp -r "${{ env.OUT_DIR }}" ./out
           find ./out ! -path ./out  |egrep -v _next |xargs rm -rf
 
           # replace basePath
-          hackCode='/(\\/ip[fn]s\\/[^\\/]+)/.exec(window.location.pathname)[1]'
+          # hackCode='/(\\/ip[fn]s\\/[^\\/]+)/.exec(window.location.pathname)[1]'
           grep -Rl '${{ env.BASE_PATH_PLACEHOLDER }}' ./out | \
-          xargs -I ^_^   sed -i -e "s|\"${{ env.BASE_PATH_PLACEHOLDER }}\"|$hackCode|g"  ^_^
+          xargs -I ^_^   sed -i -e  's|"${{ env.BASE_PATH_PLACEHOLDER }}"|/(\\/ip[fn]s\\/[^\\/]+)/.exec(window.location.pathname)[1]|g' ^_^
 
           ./go-ipfs/ipfs  --api=${{ secrets.IPFS_API }} add -r ./out/ --hidden |tee -a assets_rst.log
           ASSETS_IPFS_CID=$(cat  ./assets_rst.log | tail -n 1 | awk '{print $2}')
@@ -92,11 +92,6 @@ jobs:
         run: |
           cp -r "${{ env.OUT_DIR }}" ./out
           rm -rf ./out/_next
-
-          # replace basePath
-          hackCode='/(\\/ip[fn]s\\/[^\\/]+)/.exec(window.location.pathname)[1]'
-          grep -Rl '${{ env.BASE_PATH_PLACEHOLDER }}' ./out | \
-          xargs -I ^_^   sed -i -e "s|\"${{ env.BASE_PATH_PLACEHOLDER }}\"|$hackCode|g"  ^_^
 
           # replace assetsPrefix
           grep -Rl "${{ env.ASSETS_PREFIX_PLACEHOLDER }}" | \
