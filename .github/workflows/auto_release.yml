@@ -129,9 +129,10 @@ jobs:
             # release summary
             |     item        |             value            |
             | --------------- |   ------------------------   |
+            | entry cid       | `/ipfs/${{ env.IPFS_CID }}`  |
+            |  entry ipns     | `/ipns/${{ env.IPNS_ID }}`   |
             | assets ipfs CID | `${{ env.ASSETS_IPFS_CID }}` |
-            | entry cid       | `${{ env.IPFS_CID }}`        |
-            |  entry ipns            | `${{ env.IPNS_ID }}`  |
+
 
             # centralized deployed
             - [https://dncov.fox.mn](https://dncov.fox.mn)
