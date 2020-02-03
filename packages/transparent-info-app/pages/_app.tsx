@@ -8,11 +8,25 @@ import { MDXProvider } from '@mdx-js/react';
 import { Divider } from '@material-ui/core';
 import MdImg from '../components/MdImg';
 import { HomeFab } from '../components/fab/HomeFab';
+import MuiLink from '@material-ui/core/Link';
+import Link from '../src/Link';
+import { isExternalUrl } from '../src/config';
 
 const mdComponents = {
   h1: (props: any) => <h1 style={{ color: 'tomato' }} {...props} />,
   hr: (props: any) => <Divider />,
   img: (props: any) => <MdImg {...props} />,
+  a: (props: any) => {
+    const href: string | undefined | null = props.href;
+    if (isExternalUrl(href)) {
+      return (
+        <MuiLink target="_blank" {...props}>
+          {props.children}
+        </MuiLink>
+      );
+    }
+    return <Link {...props}> {props.children}</Link>;
+  },
 };
 
 export default class MyApp extends App {

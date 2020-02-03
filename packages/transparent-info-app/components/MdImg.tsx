@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ipfsGateways } from '../src/config';
+import { ipfsGateways, isExternalUrl } from '../src/config';
+import { url } from 'inspector';
 interface Props {
   src?: string;
   [key: string]: any;
@@ -58,17 +59,18 @@ function Audio(props: Props) {
 
 export default (props: Props) => {
   const [baseUrl, setBaseUrl] = useState('');
+  const { src } = props;
 
   useEffect(() => {
-    if (!/ip[fn]s/.test(window.location.href)) {
-      // tmp chose first
-      setBaseUrl(ipfsGateways[0]);
+    if (!isExternalUrl(src)) {
+      if (!/ip[fn]s/.test(window.location.href)) {
+        // tmp chose first
+        setBaseUrl(ipfsGateways[0]);
+      }
     }
   }, []);
 
-  const { src } = props;
   const type = checkType(src);
-  console.log(type);
   switch (type) {
     case ExtType.img:
       return <img {...props} src={`${baseUrl}${src}`} />;

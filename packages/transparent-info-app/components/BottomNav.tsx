@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-const entrys = ['/event', '/postlist', '/donation'];
+const entrys = ['/', '/event', '/postlist', '/donation'];
 
 const HiddenPrefetch = () => {
   const classes = useStyles();

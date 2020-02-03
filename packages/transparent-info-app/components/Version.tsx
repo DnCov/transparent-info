@@ -34,7 +34,7 @@ const Slink: FunctionComponent<{ sha: string; display?: string }> = ({
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      textAlign: 'center',
+      textAlign: 'left',
     },
     link: {
       paddingLeft: theme.spacing(1),
@@ -67,22 +67,29 @@ export const Version = () => {
   return (
     <Box className={classes.root}>
       {version && (
-        <Tooltip title={`version: ${version}  buildNumber: ${buildNumber}`}>
-          <Typography component="span"> {<Vlink full={fullVersion} />} </Typography>
-        </Tooltip>
+        <>
+          <Typography component="span">Version:</Typography>
+          <Tooltip title={`version: ${version}  buildNumber: ${buildNumber}`}>
+            <Typography component="span"> {<Vlink full={fullVersion} />} </Typography>
+          </Tooltip>
+        </>
       )}
 
-      <Splitr />
       {sha && (
-        <Tooltip title={`commit: ${sha}`}>
-          <Typography component="span">
-            <Slink sha={sha} />
-          </Typography>
-        </Tooltip>
+        <>
+          <Divider />
+          <Typography component="span">commit:</Typography>
+          <Tooltip title={`commit: ${sha}`}>
+            <Typography component="span">
+              <Slink sha={sha} />
+            </Typography>
+          </Tooltip>
+        </>
       )}
       {showIpfsVersion && (
         <>
-          {/* <Divider /> */}
+          <Divider />
+          <Typography component="span">{`ipfs          :`}</Typography>
           <Tooltip title={`published on ipfs:  ${ipfsCid}`}>
             <Typography component="span">
               <Link href={`https://ipfs.io/ipfs/${ipfsCid}`} target="_blank">
