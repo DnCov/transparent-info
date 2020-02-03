@@ -67,7 +67,7 @@ jobs:
           ON_IPFS: 'yes'
         run: |
           echo "::set-env name=VERSION::$(cat lerna.json|jq -r .version)"
-          yarn one
+          VERSION='${{ env.VERSION }}'  BUILD_NUMBER='${{ steps.buildnumber.outputs.build_number }}' yarn one
       - name: setup ipfs and add to ipfs network
         if: env.NEED_RELEASE == 'yes'
         run: |
@@ -94,6 +94,13 @@ jobs:
         run: |
           cp -r "${{ env.OUT_DIR }}" ./out
           rm -rf ./out/_next
+
+          # replace basePath
+          hackCode='/(\\/ip[fn]s\\/[^\\/]+)/.exec(window.location.pathname)[1]'
+          grep -Rl '${{ env.BASE_PATH_PLACEHOLDER }}' ./out | \
+          xargs -I ^_^   sed -i -e "s|\"${{ env.BASE_PATH_PLACEHOLDER }}\"|$hackCode|g"  ^_^
+
+          # replace assetsPrefix
           grep -Rl "${{ env.ASSETS_PREFIX_PLACEHOLDER }}" | \
           xargs -I ^_^  sed -i -e "s|${{ env.ASSETS_PREFIX_PLACEHOLDER }}|/ipfs/${{ env.ASSETS_IPFS_CID }}|g" ^_^
           ./go-ipfs/ipfs  --api=${{ secrets.IPFS_API }} add -r ./out/ --hidden |tee -a rst.log
