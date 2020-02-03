@@ -20,7 +20,7 @@ const mdComponents = {
     const href: string | undefined | null = props.href;
     if (isExternalUrl(href)) {
       return (
-        <MuiLink target="_blank" {...props}>
+        <MuiLink target="_blank" rel="noopener" {...props}>
           {props.children}
         </MuiLink>
       );

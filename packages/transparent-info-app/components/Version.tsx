@@ -13,7 +13,7 @@ interface VlinkProps {
 const Vlink: FunctionComponent<VlinkProps> = ({ full, display = full }) => {
   const href = `${projectUrl}/releases/tag/${full}`;
   return (
-    <Link href={href} target="_blank">
+    <Link href={href} target="_blank" rel="noopener">
       {full}
     </Link>
   );
@@ -92,7 +92,7 @@ export const Version = () => {
           <Typography component="span">{`ipfs          :`}</Typography>
           <Tooltip title={`published on ipfs:  ${ipfsCid}`}>
             <Typography component="span">
-              <Link href={`https://ipfs.io/ipfs/${ipfsCid}`} target="_blank">
+              <Link href={`https://ipfs.io/ipfs/${ipfsCid}`} target="_blank" rel="noopener">
                 {ipfsCid}
               </Link>
             </Typography>
