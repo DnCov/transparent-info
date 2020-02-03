@@ -26,8 +26,9 @@ module.exports = withMDX({
     VERSION: process.env.VERSION || '0.0.0',
     BUILD_NUMBER: process.env.BUILD_NUMBER || '1',
     SHA: process.env.SHA || '2f4f3014d6c21acb1dca65d3cd9e2f072c8cd7ea',
-    IPFS_CID: process.env.IPFS_CID,
-    ASSETS_IPFS_CID: process.env.ASSETS_IPFS_CID,
+    IPFS_CID: process.env.IPFS_CID || 'QmZkzXEuC2QXt6u7AoKjA1HTKenB3XLaJLsBq83LpwkdtL',
+    ASSETS_IPFS_CID:
+      process.env.ASSETS_IPFS_CID || 'QmVa2eNDbVihmTNXshFnHLLjVz9uGUWHkMfsaNoXt83TKc',
   },
   exportPathMap: async function(defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
     return {
