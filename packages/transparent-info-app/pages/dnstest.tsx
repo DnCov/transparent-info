@@ -13,10 +13,14 @@ export default () => {
   };
 
   const handleQuery = async () => {
-    const rst = await queryCid('latest.dncov.fox.mn');
-    // const rst = await query('_txt.dncov.fox.mn', DnsType.TXT);
-    // const rst = await query('txt.fox.mn', DnsType.TXT);
-    setRst(JSON.stringify(rst));
+    try {
+      const rst = await queryCid('latest.dncov.fox.mn');
+      // const rst = await query('_txt.dncov.fox.mn', DnsType.TXT);
+      // const rst = await query('txt.fox.mn', DnsType.TXT);
+      setRst(JSON.stringify(rst));
+    } catch (e) {
+      setRst(JSON.stringify(e));
+    }
   };
 
   return (
