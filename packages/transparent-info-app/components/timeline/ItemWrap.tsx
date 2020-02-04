@@ -5,6 +5,7 @@ import * as Fecha from 'fecha';
 import { EventTitle } from './EventTitle';
 import { EventTime } from './EventTime';
 import { EventIcon } from './EventIcon';
+import { Typography } from '@material-ui/core';
 export interface WrapExtra {
   fileName: string;
   title: string;
@@ -27,7 +28,9 @@ export default function withExtra(WrapComponent: any, extra: WrapExtra) {
         createdAt={<EventTime date={date} />}
         icon={<EventIcon icon={props.icon || extra.icon} />}
       >
-        <WrapComponent {...extra} {...props} _ts={_ts} date={date} />
+        <Typography>
+          <WrapComponent {...extra} {...props} _ts={_ts} date={date} />
+        </Typography>
       </TimelineEvent>
     ),
     {

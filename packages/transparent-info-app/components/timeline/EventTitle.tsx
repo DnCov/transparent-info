@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, Tooltip } from '@material-ui/core';
 import { EditOutlined as EditIcon } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
 import { projectUrl } from '../../src/consts';
@@ -17,11 +17,13 @@ export const EventTitle: FunctionComponent<Props> = ({ children, fileName }) => 
   return (
     <>
       <Typography component="span"> {children}</Typography>
-      <IconButton>
-        <a href={href} target="_blank">
-          <EditIcon color="primary" />
-        </a>
-      </IconButton>
+      <Tooltip title="点我编辑此日事件">
+        <IconButton>
+          <a href={href} target="_blank">
+            <EditIcon color="primary" />
+          </a>
+        </IconButton>
+      </Tooltip>
     </>
   );
 };

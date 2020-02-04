@@ -53,14 +53,51 @@ export default () => {
     dispatch({ type: 'change' });
   };
 
+  const [showError, setShowError] = useState(false);
+  const [showRight, setShowRight] = useState(false);
+
+  const errorClick = () => {
+    setShowError(true);
+    setTimeout(() => {
+      setShowError(false);
+    }, 2 * 1000);
+  };
+
   return (
     <Layout title="事件经过">
-      <Typography>如果要添加请点击下面{<EditIcon />}编辑</Typography>
+      <Typography>
+        点击下面
+        {showError ? (
+          <Typography component="span" color="error">
+            不是点我,没见我我灰色的吗？
+          </Typography>
+        ) : (
+          <IconButton onClick={errorClick}>
+            <EditIcon />
+          </IconButton>
+        )}
+        {showError ? '' : '可以编辑'}
+      </Typography>
       <Typography component="span">改变排序点击右下角</Typography>
-      <IconButton onClick={changeSort}>
-        <SortIcon color={state.desc ? 'secondary' : 'primary'} />
-      </IconButton>
-      <Typography component="span">按钮</Typography>
+      {showRight ? (
+        <Typography component="span" color="textSecondary">
+          既然够不到下面，就勉为其难帮你排好序了
+        </Typography>
+      ) : (
+        <>
+          <IconButton
+            onClick={e => {
+              setShowRight(true);
+              changeSort(e);
+              setTimeout(() => setShowRight(false), 0.5 * 1000);
+            }}
+          >
+            <SortIcon color={state.desc ? 'secondary' : 'primary'} />
+          </IconButton>
+          <Typography component="span">按钮</Typography>
+        </>
+      )}
+
       <Divider />
       <Typography> {state.desc ? '时间发生的顺序展示' : '最近发生优先展示'} </Typography>
       <TimeLineEvent desc={state.desc} />
