@@ -16,7 +16,7 @@ const ipfsCid = process.env.IPFS_CID || 'QmZkzXEuC2QXt6u7AoKjA1HTKenB3XLaJLsBq83
 const assetsIpfsCid =
   process.env.ASSETS_IPFS_CID || 'QmVa2eNDbVihmTNXshFnHLLjVz9uGUWHkMfsaNoXt83TKc';
 
-const exportTrailingSlash = onIpfs !== 'no';
+const exportTrailingSlash = true; // onIpfs !== 'no';
 console.log(
   `assetPrefix: [${assetPrefix}]  basePath: [${basePath}] onIpfs: ${onIpfs} exportTrailingSlash: ${exportTrailingSlash} `
 );
