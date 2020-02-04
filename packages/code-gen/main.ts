@@ -6,8 +6,10 @@ const Logger = require('hygen/lib/logger');
 
 const defaultTemplates = path.join(__dirname, '_templates');
 
-async function genTimelines() {
-  const files = await fs.promises.readdir(`${__dirname}/../transparent-info-app/timeline`);
+async function genAggregation() {
+  const timelines = await fs.promises.readdir(`${__dirname}/../transparent-info-app/timeline`);
+
+  const posts = await fs.promises.readdir(`${__dirname}/../transparent-info-app/pages/posts`);
 
   runner(['infoapp', 'agg'], {
     templates: defaultTemplates,
@@ -19,13 +21,14 @@ async function genTimelines() {
     //   return require('execa').shell(action, opts);
     // },
     helpers: {
-      timelines: files,
+      timelines,
+      posts: posts.filter(e => !e.startsWith('index.')),
     },
   });
 }
 
 async function main() {
-  await genTimelines();
+  await genAggregation();
 }
 
 main();

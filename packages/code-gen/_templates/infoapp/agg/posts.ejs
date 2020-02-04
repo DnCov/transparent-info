@@ -1,0 +1,19 @@
+---
+to: ../transparent-info-app/gen/posts.js
+---
+
+/*********************
+
+this is generated code ,donot edit me !!!!!
+
+****************************/
+
+import withExtra from '../components/post/PostWrap';
+
+<% h.posts.forEach( e => { %>
+import * as N<%= h.changeCase.constant(e) %> from '../pages/posts/<%- e %>'; <% }) %> 
+
+export const posts = [ <% h.posts.forEach( e => { %>
+    withExtra(N<%= h.changeCase.constant(e) %>.default,{fileName: '<%= e %>', title: N<%= h.changeCase.constant(e) %>.title , category: 'posts'}), <% }) %> 
+];
+

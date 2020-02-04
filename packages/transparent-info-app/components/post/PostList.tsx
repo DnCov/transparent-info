@@ -1,20 +1,15 @@
 import * as React from 'react';
-import Layout from '../components/Layout';
+import Layout from '../Layout';
 import { NextPage, NextPageContext } from 'next';
 import { Container, ListItem, List } from '@material-ui/core';
-import { postsList } from '../pages/posts/index';
-import Link from '../src/Link';
+import Link from '../../src/Link';
 // import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FunctionComponent } from 'react';
-
-interface Post {
-  href: string;
-  title?: string;
-}
+import withExtra, { WithExtra } from './PostWrap';
 
 interface Props {
-  posts: Post[];
+  posts: WithExtra[];
 }
 
 export const PostList: FunctionComponent<Props> = ({ posts }) => {
@@ -26,14 +21,14 @@ export const PostList: FunctionComponent<Props> = ({ posts }) => {
 
   return (
     <List>
-      {posts.map((e, i) => (
+      {posts.map(([Item, extra], i) => (
         <ListItem key={i}>
           <Link
             passHref={false}
-            onClick={(evt: React.MouseEvent) => handleLinkClick(evt, e.href)}
-            href={e.href}
+            onClick={(evt: React.MouseEvent) => handleLinkClick(evt, extra.href as string)}
+            href={extra.href as string}
           >
-            {e.title}
+            {extra.title}
           </Link>
         </ListItem>
       ))}
