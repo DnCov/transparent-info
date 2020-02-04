@@ -7,7 +7,6 @@ import { EventTime } from './EventTime';
 import { EventIcon } from './EventIcon';
 export interface WrapExtra {
   fileName: string;
-  time: string;
   title: string;
   icon: string | Component;
 }
@@ -18,8 +17,8 @@ type WrapItemProps = WrapExtra & {
 };
 
 export default function withExtra(WrapComponent: any, extra: WrapExtra) {
-  const { time } = extra;
-  const date = Fecha.parse(time, 'YYYY-MM-DD ZZ');
+  const { fileName } = extra;
+  const date = Fecha.parse(fileName.split('.')[0], 'YYYY-MM-DD');
   const _ts = date?.valueOf();
   return [
     (props: any) => (

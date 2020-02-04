@@ -1,0 +1,17 @@
+{
+  "restartable": "rs",
+  "ignore": [
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    ".git",
+    "node_modules",
+    "src",
+    "components",
+    ".next",
+    "out",
+    "pages"
+  ],
+  "watch": ["timeline"],
+  "exec": "lerna run gen",
+  "ext": "mdx"
+}

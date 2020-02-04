@@ -14,6 +14,6 @@ import withExtra from '../components/timeline/ItemWrap.tsx'
 import * as N<%= h.changeCase.constant(e) %> from '../timeline/<%- e %>'; <% }) %> 
 
 export const events = [ <% h.timelines.forEach( e => { %>
-    withExtra(N<%= h.changeCase.constant(e) %>.default,{fileName: '<%= e %>', icon: N<%= h.changeCase.constant(e) %>.icon , time: N<%= h.changeCase.constant(e) %>.time, title:N<%= h.changeCase.constant(e) %>.title  } ), <% }) %> 
+    withExtra(N<%= h.changeCase.constant(e) %>.default,{fileName: '<%= e %>', icon: N<%= h.changeCase.constant(e) %>.icon , title:N<%= h.changeCase.constant(e) %>.title  } ), <% }) %> 
 ];
 
