@@ -7,7 +7,7 @@ interface IconProps {
 
 export const EventIcon: FunctionComponent<IconProps> = ({ icon }) => {
   if (typeof icon === 'string') {
-    return <Icon>{icon}</Icon>;
+    return <Icon fontSize="small">{icon}</Icon>;
   } else if (typeof icon === 'function') {
     return icon;
   }
