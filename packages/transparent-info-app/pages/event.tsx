@@ -69,7 +69,7 @@ export default () => {
         点击下面
         {showError ? (
           <Typography component="span" color="error">
-            不是点我,没见我我灰色的吗？
+            不是点我，下面⤵️
           </Typography>
         ) : (
           <IconButton onClick={errorClick}>
@@ -81,7 +81,7 @@ export default () => {
       <Typography component="span">改变排序点击右下角</Typography>
       {showRight ? (
         <Typography component="span" color="textSecondary">
-          既然够不到下面，就勉为其难帮你排好序了
+          点这里也行吧
         </Typography>
       ) : (
         <>

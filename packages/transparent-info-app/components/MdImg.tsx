@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ipfsGateways, isExternalUrl } from '../src/config';
-import { url } from 'inspector';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/core';
 interface Props {
   src?: string;
   [key: string]: any;
@@ -35,10 +36,22 @@ function checkType(src?: string): ExtType {
   return ExtType.unknown;
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    img: {
+      maxWidth: '60vw',
+    },
+    video: {
+      maxWidth: '70vw',
+    },
+  })
+);
+
 function Video(props: Props) {
+  const classes = useStyles();
   const { alt, src } = props;
   return (
-    <video {...props} width="320" height="240" controls>
+    <video className={classes.video} {...props} width="320" height="240" controls>
       <source src={src} type="video/mp4" />
       {alt}
     </video>
@@ -60,6 +73,7 @@ function Audio(props: Props) {
 export default (props: Props) => {
   const [baseUrl, setBaseUrl] = useState('');
   const { src } = props;
+  const classes = useStyles();
 
   useEffect(() => {
     if (!isExternalUrl(src)) {
@@ -73,7 +87,7 @@ export default (props: Props) => {
   const type = checkType(src);
   switch (type) {
     case ExtType.img:
-      return <img {...props} src={`${baseUrl}${src}`} />;
+      return <img className={classes.img} {...props} src={`${baseUrl}${src}`} />;
     case ExtType.vedio:
       return <Video {...props} src={`${baseUrl}${src}`} />;
     case ExtType.audio:
